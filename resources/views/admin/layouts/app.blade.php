@@ -37,12 +37,12 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-@include('inc.sidebar')
+@include('admin.inc.sidebar')
 <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-            @include('inc.navbar')
+            @include('admin.inc.navbar')
             @yield('content')
         </div>
         <!-- End of Main Content -->
@@ -83,13 +83,9 @@
     </div>
 </div>
 <!-- Scripts -->
-{{--<script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>--}}
 <script src="{{ asset('js/app.js') }}"></script>
-{{--<script src="{{ asset('node_modules/jquery.easing/jquery.easing.min.js') }}"></script>--}}
 <script src="{{ asset('admin_theme/js/sb-admin-2.min.js') }}"></script>
-{{--<script src="{{ asset('node_modules/chart.js/dist/Chart.min.js') }}"></script>--}}
-<script src="{{ asset('admin_theme/js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('admin_theme/js/demo/chart-pie-demo.js') }}"></script>
+<script src="{{ asset('admin_theme/js/demo/datatables-demo.js') }}"></script>
 </body>
 
 </html>

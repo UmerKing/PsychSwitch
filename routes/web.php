@@ -16,10 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
 Auth::routes(['verify' => true]);
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/admin', 'Dashboard@index');
+Route::get('/admin', 'Admin\DashboardController@index');
+Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered');
+Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed');
