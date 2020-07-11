@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = new User();
+        if($user->isAdmin()) {
+            return view('admin/dashboard');
+        }
         return view('home');
     }
 }
