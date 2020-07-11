@@ -13,6 +13,11 @@
                 <h6 class="m-0 font-weight-bold text-primary">Un-Confirmed Doctors</h6>
             </div>
             <div class="card-body">
+                @if (session('message'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -29,7 +34,7 @@
                                 <td>{{ $doctor->id }}</td>
                                 <td>{{ $doctor->name }}</td>
                                 <td>{{ $doctor->email }}</td>
-                                <td><a href="#" class="btn btn-success btn-circle btn-sm">
+                                <td><a href="{{ route('admin.doctors.approve', $doctor->id) }}" class="btn btn-success btn-circle btn-sm">
                                         <i class="fas fa-check" title="Confirm"></i>
                                     </a>
                                     <a href="#" class="btn btn-danger btn-circle btn-sm">

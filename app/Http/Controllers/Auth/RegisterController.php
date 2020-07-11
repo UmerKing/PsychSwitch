@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\NewDoctorRegistered;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -64,11 +65,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $doctor = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => User::DEFAULT_TYPE
         ]);
+
+        $admin = User::where('type', User::ADMIN_TYPE)->first();
+        if ($admin) {
+            $admin->notify(new NewDoctorRegistered($doctor));
+        }
+
+        return $doctor;
     }
 }

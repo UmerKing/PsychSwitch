@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Auth::routes(['verify' => true]);
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered');
-Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed');
-Route::get('/admin', 'Admin\DashboardController@index')
-    ->middleware('is_admin')
-    ->name('index');
+
+Route::middleware(['approved'])->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/approval', 'HomeController@approval')->name('approval');;
+    Route::middleware(['is_admin'])->group(function () {
+        Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed')->name('admin.doctors.unconfirmed');
+        Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered')->name('admin.doctors.registered');
+        Route::get('/doctors/{doctor_id}/approve', 'Admin\Doctors\DoctorsController@approve')->name('admin.doctors.approve');
+        Route::get('/admin', 'Admin\DashboardController@index')->name('index');
+    });
+});

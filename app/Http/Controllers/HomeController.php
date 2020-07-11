@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\User;
 
 class HomeController extends Controller
@@ -17,7 +16,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application dashboard based on user role.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -28,5 +27,18 @@ class HomeController extends Controller
             return view('admin/dashboard');
         }
         return view('home');
+    }
+
+    /**
+     * If user is registered but not approved by admin then redirect with approval message
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function approval()
+    {
+        $user = auth()->user();
+        if(is_null($user->approved_at)) {
+            return view('auth/verify');
+        }
+        return redirect()->route('home')->withMessage('You are approved by the Admin User');
     }
 }

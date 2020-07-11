@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Doctors;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\User;
 
 class DoctorsController extends Controller
 {
@@ -13,7 +13,7 @@ class DoctorsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function registered() {
-        $doctors = DB::table('users')->where('email_verified_at','!=',NULL)->get();
+        $doctors = User::whereNotNull('approved_at')->get();
         return \view('admin/doctors/registered',compact('doctors'));
     }
 
@@ -22,7 +22,19 @@ class DoctorsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function unconfirmed() {
-        $doctors = DB::table('users')->where('email_verified_at',NULL)->get();
+        $doctors = User::whereNull('approved_at')->get();
         return \view('admin/doctors/unconfirmed',compact('doctors'));
+    }
+
+    /**
+     * approve action for admin user to approve new doctors
+     * @param $user_id
+     * @return mixed
+     */
+    public function approve($doctor_id)
+    {
+        $user = User::findOrFail($doctor_id);
+        $user->update(['approved_at' => now()]);
+        return redirect()->route('admin.doctors.unconfirmed')->withMessage('User approved successfully');
     }
 }
