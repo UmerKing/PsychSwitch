@@ -53,7 +53,7 @@ class NewDoctorRegistered extends Notification
      */
     public function toDatabase() {
         return [
-          'new_doctor' => $this->new_doctor->name,
+          'message' => $this->new_doctor->name . ' Requested appproval for new account.',
         ];
     }
 

@@ -37,4 +37,21 @@ class DoctorsController extends Controller
         $user->update(['approved_at' => now()]);
         return redirect()->route('admin.doctors.unconfirmed')->withMessage('User approved successfully');
     }
+
+    /**
+     * Mark notification as read when admin clicks on the notification
+     * @param $notification_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function markRead($notification_id) {
+        if(!is_null($notification_id)) {
+            foreach (auth()->user()->unreadNotifications as $notification) {
+                if ($notification->id === $notification_id) {
+                    $current_notification = $notification;
+                }
+            }
+            $current_notification->markAsRead();
+        }
+        return redirect()->route('admin.doctors.unconfirmed');
+    }
 }
