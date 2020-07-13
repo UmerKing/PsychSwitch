@@ -28,12 +28,7 @@
                                 <td>{{ $doctor->id }}</td>
                                 <td>{{ $doctor->name }}</td>
                                 <td>{{ $doctor->email }}</td>
-                                <td><a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check" title="Confirm"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                        <i class="fas fa-trash" title="Delete"></i>
-                                    </a></td>
+                                <td></td>
                             </tr>
                         @endforeach
                         </tbody>

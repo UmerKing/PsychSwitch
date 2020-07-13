@@ -35,7 +35,7 @@ class DoctorsController extends Controller
     {
         $user = User::findOrFail($doctor_id);
         $user->update(['approved_at' => now()]);
-        return redirect()->route('admin.doctors.unconfirmed')->withMessage('User approved successfully');
+        return redirect()->route('admin.doctors.unconfirmed')->withMessage('Doctor approved successfully');
     }
 
     /**
