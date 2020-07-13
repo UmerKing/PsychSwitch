@@ -6,7 +6,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Registered Doctors</h1>
         </div>
-        <p class="mb-4">This is list of doctors who are registered on Laravel.</p>
+        <p class="mb-4">This is list of doctors who are registered on {{config('app.name')}}.</p>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Registered Doctors</h6>

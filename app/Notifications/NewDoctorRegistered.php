@@ -43,7 +43,7 @@ class NewDoctorRegistered extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('New user has registered with email ' . $this->new_doctor->email)
+                    ->line('New doctor has registered with email ' . $this->new_doctor->email)
                     ->action('Approve user', route('admin.doctors.approve', $this->new_doctor->id));
     }
 
