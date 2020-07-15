@@ -19,7 +19,7 @@
                             <th>id</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Action</th>
+                            <th>Type</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -28,7 +28,10 @@
                                 <td>{{ $doctor->id }}</td>
                                 <td>{{ $doctor->name }}</td>
                                 <td>{{ $doctor->email }}</td>
-                                <td></td>
+                                <td><a href="{{ route('admin.doctors.approve', $doctor->id) }}" class="btn btn-{{$doctor->type === 'admin' ? 'success': 'primary'}} btn-sm">
+                                        {{$doctor->type === 'admin' ? 'Admin': 'Doctor'}}
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
