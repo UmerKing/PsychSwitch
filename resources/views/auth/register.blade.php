@@ -11,7 +11,6 @@
                     <div class="card-body" id="register-card">
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
-
                             <div class="form-group row">
                                 <label for="registered-as"
                                        class="col-md-2 col-form-label text-md-left">{{ __('Registered As') }}</label>
@@ -79,18 +78,17 @@
                                 <label for="city" class="col-md-2 col-form-label text-md-left">{{ __('City') }}</label>
 
                                 <div class="col-md-4">
-                                    <input id="city" type="text" placeholder="Your City"
-                                           class="form-control @error('city') is-invalid @enderror" name="city"
-                                           value="{{ old('city') }}" required autocomplete="city">
+                                    <input id="city_id" type="text" placeholder="Your City"
+                                           class="form-control @error('city_id') is-invalid @enderror" name="city_id"
+                                           value="{{ old('city_id') }}" required autocomplete="city_id">
 
-                                    @error('city')
+                                    @error('city_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="password"
                                        class="col-md-2 col-form-label text-md-left">{{ __('Password') }}</label>
@@ -123,20 +121,14 @@
                                 <div class="col-md-4">
                                     <input id="designation" type="text" placeholder="Your Designation"
                                            class="form-control @error('designation') is-invalid @enderror"
-                                           name="designation" required autocomplete="designation">
-
-                                    @error('designation')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                           name="designation" autocomplete="designation">
                                 </div>
                                 <label for="speciality"
                                        class="col-md-2 col-form-label text-md-left">{{ __('Speciality') }}</label>
 
                                 <div class="col-md-4">
                                     <input id="speciality" type="text" placeholder="Your Speciality"
-                                           class="form-control" name="speciality" required autocomplete="speciality">
+                                           class="form-control" name="speciality" autocomplete="speciality">
                                 </div>
                             </div>
 
@@ -145,7 +137,7 @@
 
                                 <div class="col-md-4">
                                     <input id="pmdc" placeholder="Your PMDC" type="text" class="form-control"
-                                           name="pmdc" required autocomplete="pmdc">
+                                           name="pmdc" autocomplete="pmdc">
                                 </div>
                             </div>
 

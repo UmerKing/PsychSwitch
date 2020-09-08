@@ -54,6 +54,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['required'],
+            'city_id' => ['required', 'integer'],
         ]);
     }
 
@@ -69,7 +71,9 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'type' => User::DEFAULT_TYPE
+            'type' => (int) $data['registered-as'] == 1 ? User::PATIENT_TYPE : User::DOCTOR_TYPE,
+            'phone' => $data['phone'],
+            'city_id' => $data['city_id'],
         ]);
 
         $admin = User::where('type', User::ADMIN_TYPE)->first();

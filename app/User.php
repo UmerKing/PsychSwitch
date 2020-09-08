@@ -9,7 +9,8 @@ class User extends Authenticatable
 {
     use Notifiable;
     const ADMIN_TYPE = 'admin';
-    const DEFAULT_TYPE = 'default';
+    const DOCTOR_TYPE = 'doctor';
+    const PATIENT_TYPE = 'patient';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','type','approved_at'
+        'name', 'email', 'password','type','phone','city_id', 'designation', 'speciality_id', 'sub_speciality_id','approved_at'
     ];
 
     /**
