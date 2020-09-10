@@ -87041,9 +87041,10 @@ __webpack_require__(/*! ./../../node_modules/datatables.net-bs4/css/dataTables.b
 
 __webpack_require__(/*! ./../../node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min */ "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js");
 
-__webpack_require__(/*! ./register */ "./resources/js/register.js");
+__webpack_require__(/*! ./global */ "./resources/js/global.js");
 
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+__webpack_require__(/*! ./register */ "./resources/js/register.js"); //window.Vue = require('vue');
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -87060,8 +87061,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-var app = {};
 
 /***/ }),
 
@@ -87110,6 +87109,21 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/global.js":
+/*!********************************!*\
+  !*** ./resources/js/global.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * global js file - Created on 10 Sep, 2020
+ * @type {{}}
+ */
+var app = {};
+
+/***/ }),
+
 /***/ "./resources/js/register.js":
 /*!**********************************!*\
   !*** ./resources/js/register.js ***!
@@ -87121,14 +87135,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * Js for registration page created on 07 sep, 2020-->
  **/
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-var DOCTOR = 2;
-var PATIENT = 1;
+var DOCTOR = 1;
+var PATIENT = 2;
 app.register = new Vue({
   el: '#register-card',
   data: {
-    seen: false
+    seen: true,
+    specialities: [],
+    cities: [],
+    errors: [],
+    is_error_thrown: false,
+    is_required: true
   },
   methods: {
+    //switch doctor and patient register form on change of registered as dropdown
     switchForm: function switchForm(event) {
       var target_value = parseInt(event.target.value);
 
@@ -87136,7 +87156,36 @@ app.register = new Vue({
         this.$data.seen = true;
       } else {
         this.$data.seen = false;
+        this.$is_required = false;
       }
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    //get specialities from api
+    axios.get('api/specialities').then(function (response) {
+      return _this.specialities = response.data.data;
+    })["catch"](function (error) {
+      _this.errors.push({
+        message: "Their is error occurred in speciality api please contact administrator"
+      }), _this.is_error_thrown = true;
+    }); //get cities from api
+
+    axios.get('api/cities').then(function (response) {
+      return _this.cities = response.data.data;
+    })["catch"](function (error) {
+      _this.errors.push({
+        message: "Their is error occurred in cities api please contact administrator"
+      }), _this.is_error_thrown = true;
+    }); //get selected registered as value on page load and set fields accordingly - in case of post request of registration errors
+
+    var registered_as = document.getElementById("registered-as");
+
+    if (parseInt(registered_as.value) === PATIENT) {
+      this.seen = false;
+    } else {
+      this.seen = true;
     }
   }
 });

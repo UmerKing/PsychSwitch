@@ -56,6 +56,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'phone' => ['required'],
             'city_id' => ['required', 'integer'],
+            'designation' => ['string'],
         ]);
     }
 
@@ -67,14 +68,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $doctor = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'type' => (int) $data['registered-as'] == 1 ? User::PATIENT_TYPE : User::DOCTOR_TYPE,
-            'phone' => $data['phone'],
-            'city_id' => $data['city_id'],
-        ]);
+        if((int) $data['registered-as'] === 1) {
+            $doctor = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'type' => User::DOCTOR_TYPE,
+                'phone' => $data['phone'],
+                'city_id' => $data['city_id'],
+                'designation' => $data['designation'],
+                'speciality_id' => $data['speciality_id'],
+                'pmdc' => $data['pmdc'],
+            ]);
+        }
+        else {
+            $doctor = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'type' => User::PATIENT_TYPE,
+                'phone' => $data['phone'],
+                'city_id' => $data['city_id'],
+            ]);
+        }
 
         $admin = User::where('type', User::ADMIN_TYPE)->first();
         if ($admin) {

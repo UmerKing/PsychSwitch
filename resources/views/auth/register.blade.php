@@ -7,8 +7,12 @@
                 <div class="card">
                     <div class="card-header">{{ __('Complete the Registration below to use Psychswitch features') }}
                     </div>
-
                     <div class="card-body" id="register-card">
+                        <div class="alert alert-danger" v-if="is_error_thrown" v-cloak>
+                            <ul>
+                                <li v-for="error in errors">@{{ error.message }}</li>
+                            </ul>
+                        </div>
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="form-group row">
@@ -17,9 +21,14 @@
 
                                 <div class="col-md-4">
                                     <select class="form-control" id="registered-as" name="registered-as"
-                                            v-on:click="switchForm">
-                                        <option value="1">Patient</option>
-                                        <option value="2">Doctor</option>
+                                            v-on:click="switchForm" autocomplete="registered-as">
+                                        @if(old('registered-as'))
+                                            <option value="{{(int) old('registered-as') == 1 ? 1 : 2}}">{{ (int) old('registered-as') == 1 ? 'Doctor': 'Patient'}}</option>
+                                            <option value="{{(int) old('registered-as') == 1 ? 2 : 1}}">{{ (int) old('registered-as') == 1 ? 'Patient': 'Doctor'}}</option>
+                                        @else
+                                            <option value="1">Doctor</option>
+                                            <option value="2">Patient</option>
+                                        @endif
                                     </select>
 
                                     @error('name')
@@ -78,9 +87,10 @@
                                 <label for="city" class="col-md-2 col-form-label text-md-left">{{ __('City') }}</label>
 
                                 <div class="col-md-4">
-                                    <input id="city_id" type="text" placeholder="Your City"
-                                           class="form-control @error('city_id') is-invalid @enderror" name="city_id"
-                                           value="{{ old('city_id') }}" required autocomplete="city_id">
+                                    <select class="form-control @error('city_id') is-invalid @enderror" id="city_id"
+                                            name="city_id" autocomplete="city_id" required>
+                                        <option v-for="city in cities" v-bind:value="city.id">@{{ city.city }}</option>
+                                    </select>
 
                                     @error('city_id')
                                     <span class="invalid-feedback" role="alert">
@@ -111,6 +121,11 @@
                                     <input id="password-confirm" type="password" placeholder="Re-enter password"
                                            class="form-control" name="password_confirmation" required
                                            autocomplete="new-password">
+                                    @error('password_confirmation')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -121,14 +136,19 @@
                                 <div class="col-md-4">
                                     <input id="designation" type="text" placeholder="Your Designation"
                                            class="form-control @error('designation') is-invalid @enderror"
-                                           name="designation" autocomplete="designation">
+                                           name="designation" autocomplete="designation"
+                                           value="{{ old('designation') }}" :required="is_required">
                                 </div>
                                 <label for="speciality"
                                        class="col-md-2 col-form-label text-md-left">{{ __('Speciality') }}</label>
 
                                 <div class="col-md-4">
-                                    <input id="speciality" type="text" placeholder="Your Speciality"
-                                           class="form-control" name="speciality" autocomplete="speciality">
+                                    <select class="form-control" id="speciality_id" name="speciality_id"
+                                            autocomplete="speciality_id">
+                                        <option value="1" v-for="speciality in specialities"
+                                                v-bind:value="speciality.id">@{{ speciality.name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -137,7 +157,8 @@
 
                                 <div class="col-md-4">
                                     <input id="pmdc" placeholder="Your PMDC" type="text" class="form-control"
-                                           name="pmdc" autocomplete="pmdc">
+                                           name="pmdc" autocomplete="pmdc" value="{{ old('pmdc') }}"
+                                           :required="is_required">
                                 </div>
                             </div>
 
