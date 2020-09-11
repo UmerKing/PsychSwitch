@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PatientController;
 use App\Notifications\NewDoctorRegistered;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -68,8 +69,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if((int) $data['registered-as'] === 1) {
-            $doctor = User::create([
+        if((int) $data['registered-as'] === User::DOCTOR) {
+            $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
@@ -82,7 +83,7 @@ class RegisterController extends Controller
             ]);
         }
         else {
-            $doctor = User::create([
+            $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
@@ -92,11 +93,16 @@ class RegisterController extends Controller
             ]);
         }
 
-        $admin = User::where('type', User::ADMIN_TYPE)->first();
-        if ($admin) {
-            $admin->notify(new NewDoctorRegistered($doctor));
+        if((int) $data['registered-as'] === User::DOCTOR) {
+            $admin = User::where('type', User::ADMIN_TYPE)->first();
+            if ($admin) {
+                $admin->notify(new NewDoctorRegistered($user));
+            }
         }
-
-        return $doctor;
+        else {
+            $user_controller = new PatientController();
+            $user_controller->toMail($user);
+        }
+        return $user;
     }
 }

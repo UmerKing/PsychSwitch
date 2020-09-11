@@ -11,6 +11,8 @@ class User extends Authenticatable
     const ADMIN_TYPE = 'admin';
     const DOCTOR_TYPE = 'doctor';
     const PATIENT_TYPE = 'patient';
+    const DOCTOR = 1;
+    const PATIENT = 2;
 
     /**
      * The attributes that are mass assignable.

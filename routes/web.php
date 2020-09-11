@@ -19,8 +19,10 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 });
 
+Route::get('/user/{patient_id}/confirm-registration', 'PatientController@confirmRegistration')->name('confirmRegistration');;
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/approval', 'HomeController@approval')->name('approval');;
+    Route::get('/approval', 'HomeController@approval')->name('approval');
     Route::middleware(['is_admin'])->group(function () {
         Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed')->name('admin.doctors.unconfirmed');
         Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered')->name('admin.doctors.registered');
