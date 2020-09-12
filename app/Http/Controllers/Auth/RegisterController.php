@@ -90,18 +90,22 @@ class RegisterController extends Controller
                 'type' => User::PATIENT_TYPE,
                 'phone' => $data['phone'],
                 'city_id' => $data['city_id'],
+                'approved_at' => date('Y-m-d H:i:s')
             ]);
         }
 
         if((int) $data['registered-as'] === User::DOCTOR) {
-            $admin = User::where('type', User::ADMIN_TYPE)->first();
-            if ($admin) {
+             //$admin = User::where('type', User::ADMIN_TYPE)->first();
+             $admins = User::where('type', User::ADMIN_TYPE)->get();
+            if ($admins) {
+                foreach ($admins as $admin) {
                 $admin->notify(new NewDoctorRegistered($user));
+        }
             }
         }
         else {
-            $user_controller = new PatientController();
-            $user_controller->toMail($user);
+            // $user_controller = new PatientController();
+            // $user_controller->toMail($user);
         }
         return $user;
     }
