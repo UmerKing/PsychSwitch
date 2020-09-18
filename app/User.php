@@ -49,4 +49,13 @@ class User extends Authenticatable
         $user = auth()->user();
         return $user->type === self::ADMIN_TYPE;
     }
+
+    /**
+     * Check if user is doctor user
+     * @return bool
+     */
+    public function isDoctor()    {
+        $user = auth()->user();
+        return $user->type === self::DOCTOR_TYPE;
+    }
 }

@@ -1,4 +1,10 @@
 @extends('layouts.app')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('theme/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/style.css') }}">
+@stop
 
 @section('content')
     <div class="container">

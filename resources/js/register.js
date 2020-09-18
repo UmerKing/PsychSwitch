@@ -7,7 +7,7 @@ window.Vue = require('vue');
 const DOCTOR = 1;
 const PATIENT = 2;
 
-
+if(document.getElementById("register-card")){
 app.register = new Vue({
     el: '#register-card',
     data: {
@@ -62,3 +62,4 @@ app.register = new Vue({
         }
     },
 });
+}

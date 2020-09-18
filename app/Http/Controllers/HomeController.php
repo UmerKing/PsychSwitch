@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -12,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        //$this->middleware(['auth','verified']);
     }
 
     /**
@@ -22,11 +24,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = new User();
-        if($user->isAdmin()) {
-            return view('admin/dashboard');
+        if (Auth::check()) {
+            $user = new User();
+            if ($user->isAdmin()) {
+                return view('admin/dashboard');
+            } else if ($user->isDoctor()) {
+                if (is_null($user->approved_at))
+                    return view('auth/verify');
+                else
+                    return view('doctor/dashboard');
+            }
+            return view('home');
         }
-        return view('home');
+        return view('index');
     }
 
     /**
@@ -36,11 +46,10 @@ class HomeController extends Controller
     public function approval()
     {
         $user = auth()->user();
-        if(is_null($user->approved_at)) {
+        if (is_null($user->approved_at)) {
             return view('auth/verify');
-        }
-        else {
-         return view('/');   
+        } else {
+            return view('/');
         }
         return redirect()->route('home')->withMessage('You are approved by the Admin User');
     }

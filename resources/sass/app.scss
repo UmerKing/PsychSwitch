@@ -7,6 +7,12 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import './../../node_modules/owl.carousel/dist/assets/owl.carousel.min.css';
+@import "./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "./../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+
 [v-cloak] {
   display: none;
 }
+
+//@import 'doctor_profile';

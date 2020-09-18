@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes(['verify' => true]);
 
-Route::middleware(['approved'])->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/home', 'HomeController@index')->name('home');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/user/{patient_id}/confirm-registration', 'PatientController@confirmRegistration')->name('confirmRegistration');;
+Route::middleware(['approved'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/doctor', 'DoctorController@index')->name('doctor');
+    Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/approval', 'HomeController@approval')->name('approval');
