@@ -1,10 +1,17 @@
 @extends('layouts.app')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('theme/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('theme/css/style.css') }}">
+    <script src="{{ asset('theme/js/main.js')}}" defer></script>
+@stop
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card mt-10">
                 <div class="card-header">{{ __('Confirm Password') }}</div>
 
                 <div class="card-body">

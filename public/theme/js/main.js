@@ -274,9 +274,9 @@ dots:false,
   }
 });
 
-if (document.getElementById('default-select')) {
-  $('select').niceSelect();
-}
+// if (document.getElementById('default-select')) {
+//   $('select').niceSelect();
+// }
 
   //about-pro-active
 $('.details_active').owlCarousel({

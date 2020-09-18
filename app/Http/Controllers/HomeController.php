@@ -29,12 +29,12 @@ class HomeController extends Controller
             if ($user->isAdmin()) {
                 return view('admin/dashboard');
             } else if ($user->isDoctor()) {
-                if (is_null($user->approved_at))
+                if (!auth()->user()->approved_at)
                     return view('auth/verify');
                 else
                     return view('doctor/dashboard');
             }
-            return view('home');
+            return view('index');
         }
         return view('index');
     }
@@ -49,8 +49,7 @@ class HomeController extends Controller
         if (is_null($user->approved_at)) {
             return view('auth/verify');
         } else {
-            return view('/');
+            return redirect()->route('index')->withMessage('You are approved by the Admin User');
         }
-        return redirect()->route('home')->withMessage('You are approved by the Admin User');
     }
 }
