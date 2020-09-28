@@ -18,7 +18,8 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware(['approved'])->group(function () {
 //    Route::get('/doctor', 'DoctorController@index')->name('doctor');
-//    Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
+    Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
+    Route::post('/doctor/update/{id}', 'DoctorController@update');
 });
 
 Route::middleware(['auth'])->group(function () {

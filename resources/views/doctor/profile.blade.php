@@ -1,84 +1,10 @@
-@extends('layouts.app')
-
+@extends('doctor.layouts.app')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/doctor_profile.css') }}">
+@stop
 @section('content')
-<div class="main-content">
-    <!-- Top navbar -->
-    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
-        <div class="container-fluid">
-            <!-- Brand -->
-            <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">User profile</a>
-            <!-- Form -->
-            <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-                <div class="form-group mb-0">
-                    <div class="input-group input-group-alternative">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-search"></i></span>
-                        </div>
-                        <input class="form-control" placeholder="Search" type="text">
-                    </div>
-                </div>
-            </form>
-            <!-- User -->
-            <ul class="navbar-nav align-items-center d-none d-md-flex">
-                <li class="nav-item dropdown">
-                    <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="media align-items-center">
-                <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="https://demos.creative-tim.com/argon-dashboard/assets/img/theme/team-4.jpg">
-                </span>
-                            <div class="media-body ml-2 d-none d-lg-block">
-                                <span class="mb-0 text-sm  font-weight-bold">{{ Auth::user()->email }}</span>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-                        <div class=" dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome!</h6>
-                        </div>
-                        <a href="../examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-single-02"></i>
-                            <span>My profile</span>
-                        </a>
-                        <a href="../examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="../examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
-                            <span>Activity</span>
-                        </a>
-                        <a href="../examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-support-16"></i>
-                            <span>Support</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ni ni-user-run"></i>
-                            <span>Logout</span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Header -->
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
-        <!-- Mask -->
-        <span class="mask bg-gradient-default opacity-8"></span>
-        <!-- Header container -->
-        <div class="container-fluid d-flex align-items-center">
-            <div class="row">
-                <div class="col-lg-7 col-md-10">
-                    <h1 class="display-2 text-white">Hello Jesse</h1>
-                    <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-                    <a href="#!" class="btn btn-info">Edit profile</a>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Page content -->
-    <div class="container-fluid mt--7">
-        <div class="row">
+        <div class="row" id="doctor-profile" style="margin: 0">
             <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
                 <div class="card card-profile shadow">
                     <div class="row justify-content-center">
@@ -102,7 +28,7 @@
                                 <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                     <div>
                                         <span class="heading">22</span>
-                                        <span class="description">Friends</span>
+                                        <span class="description">Clients</span>
                                     </div>
                                     <div>
                                         <span class="heading">10</span>
@@ -110,7 +36,7 @@
                                     </div>
                                     <div>
                                         <span class="heading">89</span>
-                                        <span class="description">Comments</span>
+                                        <span class="description">Reviews</span>
                                     </div>
                                 </div>
                             </div>
@@ -136,46 +62,91 @@
                 </div>
             </div>
             <div class="col-xl-8 order-xl-1">
+                <div class="alert alert-danger" v-if="is_error_thrown" v-cloak>
+                    <ul>
+                        <li v-for="error in errors">@{{ error.message }}</li>
+                    </ul>
+                </div>
+                @include('flash-message')
+                <div>
+                    <form method="POST" action="{{ url('doctor/update/'. $doctor_profile["id"]) }}">
                 <div class="card bg-secondary shadow">
                     <div class="card-header bg-white border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">My account</h3>
+                                <h3 class="mb-0">My Profile</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    {{ __('Register') }}
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form>
+                            @csrf
                             <h6 class="heading-small text-muted mb-4">User information</h6>
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="input-username">Username</label>
-                                            <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username" value="lucky.jesse">
+                                            <label class="form-control-label" for="input-username">Name</label>
+                                            <input type="text" id="name" name="name" class="form-control form-control-alternative" placeholder="Username" value="{{$doctor->name}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-email">Email address</label>
-                                            <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="jesse@example.com">
+                                            <input type="email" id="email" name="email" class="form-control form-control-alternative" value="{{$doctor->email}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="input-first-name">First name</label>
-                                            <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="First name" value="Lucky">
+                                            <label class="form-control-label" for="input-first-name">Phone</label>
+                                            <input type="text" id="phone" name="phone" class="form-control form-control-alternative @error('phone') is-invalid @enderror" placeholder="First name" value="{{$doctor->phone}}">
+                                            @error('phone')
+                                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong></span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="input-last-name">Last name</label>
-                                            <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Last name" value="Jesse">
+                                            <label class="form-control-label" for="input-last-name">City</label>
+                                            <select class="form-control @error('city_id') is-invalid @enderror" id="city_id"
+                                                    name="city_id" autocomplete="city_id" required>
+                                                <option v-for="city in cities" v-bind:value="city.id" :selected="city.id == {{ $doctor->city_id }} ? true : false ">@{{ city.city }}</option>
+                                            </select>
+                                            @error('city_id')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php //var_dump($doctor_profile['speciality_id']); die(); ?>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group focused">
+                                            <label class="form-control-label" for="input-first-name">Speciality</label>
+                                            <select class="form-control" id="speciality_id" name="speciality_id" v-on:change="getSubSpecialities"
+                                                    autocomplete="speciality_id">
+                                                <option  v-for="speciality in specialities"
+                                                        v-bind:value="speciality.id" :selected="speciality.id == {{ $doctor_profile['speciality_id'] }} ? true : false ">@{{ speciality.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group focused">
+                                            <label class="form-control-label" for="input-last-name">Sub Speciality</label>
+                                            <select class="form-control @error('sub_speciality_id') is-invalid @enderror" id="city_id"
+                                                    name="sub_speciality_id" autocomplete="sub_speciality_id">
+                                                <option v-for="sub_speciality in sub_specialities" v-bind:value="sub_speciality.id">@{{ sub_speciality.name }}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -188,28 +159,28 @@
                                     <div class="col-md-12">
                                         <div class="form-group focused">
                                             <label class="form-control-label" for="input-address">Address</label>
-                                            <input id="input-address" class="form-control form-control-alternative" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
+                                            <input id="address" class="form-control form-control-alternative" name="address" placeholder="Home Address" value="{{$doctor_profile['address']}}" type="text">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="input-city">City</label>
-                                            <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="City" value="New York">
+                                            <label class="form-control-label" for="designation">Designation</label>
+                                            <input type="text" id="designation" class="form-control form-control-alternative" name="designation" placeholder="Designation" value="{{$doctor_profile['designation']}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="input-country">Country</label>
-                                            <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Country" value="United States">
+                                            <label class="form-control-label" for="pmdc">PMDC</label>
+                                            <input type="text" id="pmdc" class="form-control form-control-alternative" name="pmdc" placeholder="PMDC" value="{{$doctor_profile['pmdc']}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-country">Postal code</label>
-                                            <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="Postal code">
-                                        </div>
+                                        {{--<div class="form-group">--}}
+                                            {{--<label class="form-control-label" for="about-me">About</label>--}}
+                                            {{--<input type="number" id="about-me" class="form-control form-control-alternative" placeholder="About me" name="about-me">--}}
+                                        {{--</div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -219,14 +190,13 @@
                             <div class="pl-lg-4">
                                 <div class="form-group focused">
                                     <label>About Me</label>
-                                    <textarea rows="4" class="form-control form-control-alternative" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
+                                    <textarea rows="4" name="about-me" class="form-control form-control-alternative" placeholder="A few words about you ...">{{$doctor_profile['about_me']}}</textarea>
                                 </div>
                             </div>
-                        </form>
                     </div>
+                </div>
+                        </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 @endsection

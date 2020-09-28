@@ -26,6 +26,7 @@ require('./../../public/theme/js/plugins');
 require('./../../public/theme/js/jquery.ajaxchimp.min');
 require('./global');
 require('./register');
+require('./doctor_profile');
 
 
 //window.Vue = require('vue');

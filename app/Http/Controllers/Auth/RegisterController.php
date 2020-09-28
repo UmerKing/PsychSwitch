@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DoctorProfile;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\PatientController;
 use App\Notifications\NewDoctorRegistered;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -46,7 +46,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -64,48 +64,36 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \App\User
      */
     protected function create(array $data)
     {
-        if((int) $data['registered-as'] === User::DOCTOR) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'type' => User::DOCTOR_TYPE,
-                'phone' => $data['phone'],
-                'city_id' => $data['city_id'],
-                'designation' => $data['designation'],
-                'speciality_id' => $data['speciality_id'],
-                'pmdc' => $data['pmdc'],
-            ]);
-        }
-        else {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'type' => User::PATIENT_TYPE,
-                'phone' => $data['phone'],
-                'city_id' => $data['city_id'],
-                'approved_at' => date('Y-m-d H:i:s')
-            ]);
-        }
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'type' => User::PATIENT_TYPE,
+            'phone' => $data['phone'],
+            'city_id' => $data['city_id'],
+            'approved_at' => (int)$data['registered-as'] === User::DOCTOR ? NULL : date('Y-m-d H:i:s')
+        ]);
 
-        if((int) $data['registered-as'] === User::DOCTOR) {
-             //$admin = User::where('type', User::ADMIN_TYPE)->first();
-             $admins = User::where('type', User::ADMIN_TYPE)->get();
+        if ((int)$data['registered-as'] === User::DOCTOR) {
+            //create profile
+            DoctorProfile::create([
+                'designation' => $data['designation'],
+                'pmdc' => $data['pmdc'],
+                'user_id' => $user->id,
+                'speciality_id' => $data['speciality_id'],
+            ]);
+            //send admin user email & alert
+            $admins = User::where('type', User::ADMIN_TYPE)->get();
             if ($admins) {
                 foreach ($admins as $admin) {
-                $admin->notify(new NewDoctorRegistered($user));
-        }
+                    $admin->notify(new NewDoctorRegistered($user));
+                }
             }
-        }
-        else {
-            // $user_controller = new PatientController();
-            // $user_controller->toMail($user);
         }
         return $user;
     }

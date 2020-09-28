@@ -90898,7 +90898,9 @@ __webpack_require__(/*! ./../../public/theme/js/jquery.ajaxchimp.min */ "./publi
 
 __webpack_require__(/*! ./global */ "./resources/js/global.js");
 
-__webpack_require__(/*! ./register */ "./resources/js/register.js"); //window.Vue = require('vue');
+__webpack_require__(/*! ./register */ "./resources/js/register.js");
+
+__webpack_require__(/*! ./doctor_profile */ "./resources/js/doctor_profile.js"); //window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -90964,6 +90966,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/doctor_profile.js":
+/*!****************************************!*\
+  !*** ./resources/js/doctor_profile.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Js for doctor profile page created on 22 sep, 2020
+ **/
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+if (document.getElementById("doctor-profile")) {
+  doctor_profile = new Vue({
+    el: '#doctor-profile',
+    data: {
+      cities: [],
+      specialities: [],
+      sub_specialities: [],
+      errors: [],
+      is_error_thrown: false,
+      base_url: window.location.origin
+    },
+    methods: {
+      getSubSpecialities: function getSubSpecialities() {
+        //get sub-specialities against selected speciality
+        setTimeout(function () {
+          var _this = this;
+
+          var speciality_id = document.getElementById("speciality_id"); //get sub-specialities from api
+
+          axios.get(this.base_url + '/api/sub_specialities/' + parseInt(speciality_id.options[speciality_id.selectedIndex].value)).then(function (response) {
+            _this.sub_specialities = response.data.data, _this.sub_specialities.length === 0 ? _this.sub_specialities.push({
+              id: '',
+              name: "No data available"
+            }) : _this.sub_specialities;
+          })["catch"](function (error) {
+            _this.errors.push({
+              message: "Their is error occurred in sub-speciality api please contact administrator"
+            }), _this.is_error_thrown = true;
+          });
+        }.bind(this), 1000);
+      }
+    },
+    mounted: function mounted() {
+      var _this2 = this;
+
+      //get specialities from api
+      axios.get(this.base_url + '/api/specialities').then(function (response) {
+        return _this2.specialities = response.data.data, _this2.getSubSpecialities();
+      })["catch"](function (error) {
+        _this2.errors.push({
+          message: "Their is error occurred in speciality api please contact administrator"
+        }), _this2.is_error_thrown = true;
+      }); //get cities from api
+
+      axios.get(this.base_url + '/api/cities').then(function (response) {
+        return _this2.cities = response.data.data;
+      })["catch"](function (error) {
+        _this2.errors.push({
+          message: "Their is error occurred in cities api please contact administrator"
+        }), _this2.is_error_thrown = true;
+      });
+    }
+  });
+}
+
+/***/ }),
+
 /***/ "./resources/js/global.js":
 /*!********************************!*\
   !*** ./resources/js/global.js ***!
@@ -90988,28 +91059,10 @@ var app = {}; // $('#datepicker').datepicker({
 //     }
 //
 // });
-// $(document).ready(function() {
-//     $('.js-example-basic-multiple').select2();
-// });
-// resitration_Form
 
 $(document).ready(function () {
-  $('.popup-with-form').magnificPopup({
-    type: 'inline',
-    preloader: false,
-    focus: '#name',
-    // When elemened is focused, some mobile browsers in some cases zoom in
-    // It looks not nice, so we disable it:
-    callbacks: {
-      beforeOpen: function beforeOpen() {
-        if ($(window).width() < 700) {
-          this.st.focus = false;
-        } else {
-          this.st.focus = '#name';
-        }
-      }
-    }
-  });
+  //$('.js-example-basic-multiple').select2();
+  $('.nice-select').niceSelect();
 });
 
 /***/ }),
