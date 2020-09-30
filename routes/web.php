@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed')->name('admin.doctors.unconfirmed');
         Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered')->name('admin.doctors.registered');
         Route::get('/doctors/{doctor_id}/approve', 'Admin\Doctors\DoctorsController@approve')->name('admin.doctors.approve');
+        Route::get('/doctors/{id}/profile', 'Admin\Doctors\DoctorsController@profile')->name('admin.doctors.profile');
         Route::get('/admin', 'Admin\DashboardController@index')->name('index');
         Route::get('/doctors/{notification_id}/markread', 'Admin\Doctors\DoctorsController@markRead')->name('admin.doctors.markread');
     });

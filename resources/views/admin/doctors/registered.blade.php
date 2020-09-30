@@ -31,6 +31,9 @@
                                 <td><a href="{{ route('admin.doctors.approve', $doctor->id) }}" class="btn btn-{{$doctor->type === 'admin' ? 'success': 'primary'}} btn-sm">
                                         {{$doctor->type === 'admin' ? 'Admin': 'Doctor'}}
                                     </a>
+                                    <a href="{{ route('admin.doctors.profile', $doctor->id) }}" class="btn btn-primary btn-sm">
+                                        View
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

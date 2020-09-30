@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Doctors;
 
+use App\DoctorProfile;
 use App\Http\Controllers\Controller;
 use App\User;
 
@@ -24,6 +25,16 @@ class DoctorsController extends Controller
     public function unconfirmed() {
         $doctors = User::whereNull('approved_at')->get();
         return \view('admin/doctors/unconfirmed',compact('doctors'));
+    }
+
+    /**
+     * view doctor's profile
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function profile($id) {
+        $doctor = User::where('id', $id)->get();
+        $doctor_profile = DoctorProfile::where('user_id', $id)->get();
+        return view('admin/doctors/profile',['doctor'=>$doctor[0], 'doctor_profile' => $doctor_profile[0]]);
     }
 
     /**
