@@ -11,15 +11,15 @@
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
                                 <a href="#">
-                                    <img src="https://demos.creative-tim.com/argon-dashboard/assets/img/theme/team-4.jpg" class="rounded-circle">
+                                    <img src="{{ asset('images/'. $doctor_profile["avatar"]) }}" class="rounded-circle">
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                         <div class="d-flex justify-content-between">
-                            <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
-                            <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+                            {{--<a href="#" class="btn btn-sm btn-info mr-4">Connect</a>--}}
+                            {{--<a href="#" class="btn btn-sm btn-default float-right">Message</a>--}}
                         </div>
                     </div>
                     <div class="card-body pt-0 pt-md-4">
@@ -43,20 +43,17 @@
                         </div>
                         <div class="text-center">
                             <h3>
-                                Jessica Jones<span class="font-weight-light">, 27</span>
+                                {{$doctor->name}}<span class="font-weight-light"></span>
                             </h3>
                             <div class="h5 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                                <i class="ni location_pin mr-2"></i>@{{ city_name }}
                             </div>
                             <div class="h5 mt-4">
-                                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                                <i class="ni business_briefcase-24 mr-2"></i>{{$doctor_profile["designation"]}}
                             </div>
                             <div>
                                 <i class="ni education_hat mr-2"></i>University of Computer Science
                             </div>
-                            <hr class="my-4">
-                            <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                            <a href="#">Show more</a>
                         </div>
                     </div>
                 </div>
@@ -78,14 +75,14 @@
                             </div>
                             <div class="col-4 text-right">
                                 <button type="submit" class="btn btn-sm btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Update') }}
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                             @csrf
-                            <h6 class="heading-small text-muted mb-4">User information</h6>
+                            <h6 class="heading-small text-muted mb-4">Personal information</h6>
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -127,7 +124,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php //var_dump($doctor_profile['speciality_id']); die(); ?>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group focused">
+                                            <label class="form-control-label" for="input-address">Address</label>
+                                            <input id="address" class="form-control form-control-alternative" name="address" placeholder="Home Address" value="{{$doctor_profile['address']}}" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <!-- Address -->
+                            <h6 class="heading-small text-muted mb-4">Professional information</h6>
+                            <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group focused">
@@ -135,7 +144,7 @@
                                             <select class="form-control" id="speciality_id" name="speciality_id" v-on:change="getSubSpecialities"
                                                     autocomplete="speciality_id">
                                                 <option  v-for="speciality in specialities"
-                                                        v-bind:value="speciality.id" :selected="speciality.id == {{ $doctor_profile['speciality_id'] }} ? true : false ">@{{ speciality.name }}
+                                                         v-bind:value="speciality.id" :selected="speciality.id == {{ $doctor_profile['speciality_id'] }} ? true : false ">@{{ speciality.name }}
                                                 </option>
                                             </select>
                                         </div>
@@ -147,19 +156,6 @@
                                                     name="sub_speciality_id" autocomplete="sub_speciality_id">
                                                 <option v-for="sub_speciality in sub_specialities" v-bind:value="sub_speciality.id">@{{ sub_speciality.name }}</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="my-4">
-                            <!-- Address -->
-                            <h6 class="heading-small text-muted mb-4">Contact information</h6>
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group focused">
-                                            <label class="form-control-label" for="input-address">Address</label>
-                                            <input id="address" class="form-control form-control-alternative" name="address" placeholder="Home Address" value="{{$doctor_profile['address']}}" type="text">
                                         </div>
                                     </div>
                                 </div>

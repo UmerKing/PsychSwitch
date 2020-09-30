@@ -14,6 +14,7 @@ if(document.getElementById("doctor-profile")){
             sub_specialities: [],
             errors: [],
             is_error_thrown: false,
+            city_name: '',
             base_url : window.location.origin
         },
         methods: {
@@ -34,7 +35,12 @@ if(document.getElementById("doctor-profile")){
                             this.errors.push({message: "Their is error occurred in sub-speciality api please contact administrator"}),
                                 this.is_error_thrown = true
                         });
+                    this.appendCityName();
                 }.bind(this), 1000);
+            },
+            appendCityName: function () { //display city_name, Country on doctor profile page under avatar
+                var city_name = document.getElementById("city_id");
+                this.city_name = city_name.options[city_name.selectedIndex].text + ", Pakistan";
             }
         },
         mounted() {
