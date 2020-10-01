@@ -14,16 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes(['verify' => true]);
 
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware(['approved'])->group(function () {
-//    Route::get('/doctor', 'DoctorController@index')->name('doctor');
-    Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
-    Route::post('/doctor/update/{id}', 'DoctorController@update');
+    Route::middleware(['is_doctor'])->group(function () {
+        Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
+        Route::post('/doctor/update/{id}', 'DoctorController@update');
+        Route::get('/approval', 'HomeController@approval')->name('approval');
+        //Route::get('/doctor', 'DoctorController@index')->name('doctor');
+    });
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/approval', 'HomeController@approval')->name('approval');
     Route::middleware(['is_admin'])->group(function () {
         Route::get('/doctors/unconfirmed', 'Admin\Doctors\DoctorsController@unconfirmed')->name('admin.doctors.unconfirmed');
         Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered')->name('admin.doctors.registered');
