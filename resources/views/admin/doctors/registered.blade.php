@@ -19,7 +19,7 @@
                             <th>id</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Type</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -28,9 +28,7 @@
                                 <td>{{ $doctor->id }}</td>
                                 <td>{{ $doctor->name }}</td>
                                 <td>{{ $doctor->email }}</td>
-                                <td><a href="{{ route('admin.doctors.approve', $doctor->id) }}" class="btn btn-{{$doctor->type === 'admin' ? 'success': 'primary'}} btn-sm">
-                                        {{$doctor->type === 'admin' ? 'Admin': 'Doctor'}}
-                                    </a>
+                                <td>
                                     <a href="{{ route('admin.doctors.profile', $doctor->id) }}" class="btn btn-primary btn-sm">
                                         View
                                     </a>

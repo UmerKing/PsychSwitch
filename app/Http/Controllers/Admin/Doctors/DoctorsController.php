@@ -14,7 +14,7 @@ class DoctorsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function registered() {
-        $doctors = User::whereNotNull('approved_at')->get();
+        $doctors = User::whereNotNull('approved_at')->where("type", "doctor")->get();
         return \view('admin/doctors/registered',compact('doctors'));
     }
 
@@ -23,7 +23,7 @@ class DoctorsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function unconfirmed() {
-        $doctors = User::whereNull('approved_at')->get();
+        $doctors = User::whereNull('approved_at')->where("type", "doctor")->get();
         return \view('admin/doctors/unconfirmed',compact('doctors'));
     }
 
