@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'type' => User::PATIENT_TYPE,
+            'type' => (int)$data['registered-as'] === User::DOCTOR ? User::DOCTOR_TYPE : User::PATIENT_TYPE,
             'phone' => $data['phone'],
             'city_id' => $data['city_id'],
             'approved_at' => (int)$data['registered-as'] === User::DOCTOR ? NULL : date('Y-m-d H:i:s')
