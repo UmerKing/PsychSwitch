@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'PsychSwicth') }}</title>
 
     <!-- Scripts -->
 
@@ -45,7 +45,7 @@
                         <div class="col-xl-6 col-md-6">
                             <div class="short_contact_list">
                                 <ul>
-                                    <li><a href="#"> <i class="fa fa-envelope"></i> info@docmed.com</a></li>
+                                    <li><a href="#"> <i class="fa fa-envelope"></i> info@psychswitch.com</a></li>
                                     <li><a href="#"> <i class="fa fa-phone"></i> 160160</a></li>
                                 </ul>
                             </div>
@@ -136,17 +136,11 @@
                         <div class="col-xl-6">
                             <select class="form-select wide nice-select" id="default-select" class="">
                                 <option data-display="Select Department">Department</option>
-                                <option value="1">Eye Care</option>
-                                <option value="2">Physical Therapy</option>
-                                <option value="3">Dental Care</option>
                             </select>
                         </div>
                         <div class="col-xl-6">
                             <select class="form-select wide nice-select" id="default-select" class="">
                                 <option data-display="Doctors">Doctors</option>
-                                <option value="1">Mirazul Alom</option>
-                                <option value="2">Monzul Alom</option>
-                                <option value="3">Azizul Isalm</option>
                             </select>
                         </div>
                         <div class="col-xl-6">
