@@ -71,6 +71,12 @@
                                         <li><a href="#">Department</a></li>
                                         <li><a href="#">Doctors</a></li>
                                         <li><a href="#">Contact</a></li>
+                                        {{--<li><a href="#">blog <i class="ti-angle-down"></i></a>--}}
+                                            {{--<ul class="submenu">--}}
+                                                {{--<li><a href="blog.html">blog</a></li>--}}
+                                                {{--<li><a href="single-blog.html">single-blog</a></li>--}}
+                                            {{--</ul>--}}
+                                        {{--</li>--}}
                                         @guest
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
