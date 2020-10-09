@@ -121,7 +121,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-6">
                     <div class="welcome_docmed_info">
-                        <h2>Welcome to Docmed</h2>
+                        <h2>Welcome to PsychSwitch</h2>
                         <h3>Best Care For Your <br>
                             Good Health</h3>
                         <p>Esteem spirit temper too say adieus who direct esteem.
@@ -518,8 +518,9 @@
                     <div class="col-xl-4 col-md-6 col-lg-4">
                         <div class="footer_widget">
                             <div class="footer_logo">
-                                <a href="#">
-                                    <img src="{{asset('images/footer_logo.png')}}" alt="">
+                                <a href="#" style="color:white">
+                                    <!-- <img src="{{asset('images/footer_logo.png')}}" alt=""> -->
+                                    PsychSwitch
                                 </a>
                             </div>
                             <p>
@@ -583,9 +584,9 @@
                                 Address
                             </h3>
                             <p>
-                                200, D-block, Green lane USA <br>
-                                +10 367 467 8934 <br>
-                                docmed@contact.com
+                                200, D-block, Isb <br>
+                                +92 367 467 8934 <br>
+                                psychswitch@contact.com
                             </p>
                         </div>
                     </div>
@@ -600,9 +601,7 @@
                         <p class="copy_right text-center">
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                            All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                                aria-hidden="true"></i> by <a
-                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                            All rights reserved
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>
