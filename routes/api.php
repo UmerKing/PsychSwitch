@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('specialities', 'API\SpecialityController');
 Route::resource('sub_specialities', 'API\SubSpecialityController');
 Route::resource('cities', 'API\CityController');
+Route::resource('timing_slots', 'API\TimingSlotController');
+Route::resource('fee_rates', 'API\FeeRateController');

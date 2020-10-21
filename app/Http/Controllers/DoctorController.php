@@ -66,4 +66,13 @@ class DoctorController extends Controller
         $doctor_profile = DoctorProfile::where('user_id', $doctor->id)->get();
         return view('doctor/profile',['doctor'=>$doctor, 'doctor_profile' => $doctor_profile[0]]);
     }
+
+    /**
+     * doctor's timing and fee rates view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function timingsAndRates()
+    {
+        return view('doctor/timings-and-rates');
+    }
 }
