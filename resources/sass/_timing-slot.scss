@@ -1,0 +1,25 @@
+/**
+ * SASS for Timings slots page created on 28 October, 2020
+ **/
+
+#timing-slots-view {
+  .card.card-timing-slot {
+    .card-body {
+      .pl-lg-4 {
+        .row {
+          .col-lg-4 {
+            .form-group {
+              .timepicker {
+                .gj-timepicker {
+                  .gj-textbox-md {
+                    border-bottom: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

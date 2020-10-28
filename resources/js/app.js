@@ -24,9 +24,11 @@ require('./../../public/theme/js/jquery.slicknav.min');
 require('./../../public/theme/js/jquery.magnific-popup.min');
 require('./../../public/theme/js/plugins');
 require('./../../public/theme/js/jquery.ajaxchimp.min');
+require('./../../public/theme/js/gijgo.min');
 require('./global');
 require('./register');
 require('./doctor_profile');
+require('./timing_slots');
 
 
 //window.Vue = require('vue');
