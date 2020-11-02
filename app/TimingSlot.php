@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TimingSlot extends Model
 {
+    public $timestamps = false;
     use SoftDeletes;
 
     /**

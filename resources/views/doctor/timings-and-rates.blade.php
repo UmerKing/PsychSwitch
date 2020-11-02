@@ -13,6 +13,15 @@
                 <form v-on:submit.prevent="submitForm">
                     <div class="card-body pt-0 pt-md-4">
                         @csrf
+                        <div class="alert alert-danger" v-if="is_error_thrown" v-cloak>
+                            <ul>
+                                <li v-for="message in messages">@{{ message.message }}</li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-success alert-block" v-if="data_success" v-cloak>
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>New Record has been created successfully.</strong>
+                        </div>
                         <h6 class="heading-small text-muted mb-4">Add New Slot</h6>
                         <div class="pl-lg-4">
                             <div class="row">
@@ -33,9 +42,17 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-timing">Timing</label>
+                                        <label class="form-control-label" for="input-start-time">Timing</label>
                                         <div class="form-control timepicker">
-                                            <input id="time-picker" width="276" name="timing"/>
+                                            <input class="time-picker start-time" id="start-time" width="276" name="start-time"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-end-time">Timing</label>
+                                        <div class="form-control timepicker">
+                                            <input class="time-picker end-time" id="end-time" width="276" name="end-time"/>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +62,7 @@
                                             Type</label>
                                         <select class="form-control @error('treatment_type') is-invalid @enderror"
                                                 id="treatment_type"
-                                                name="treatment_type" autocomplete="treatment_type">
+                                                name="treatment_type" autocomplete="treatment_type" v-model="form.treatment_type">
                                             <option value="1">Video call</option>
                                             <option value="2">In Clinic</option>
                                         </select>
