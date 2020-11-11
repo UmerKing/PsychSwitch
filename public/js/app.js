@@ -96120,7 +96120,8 @@ if (document.getElementById("timing-slots-view")) {
       },
       is_error_thrown: false,
       data_success: false,
-      messages: []
+      messages: [],
+      time_slots: []
     },
     methods: {
       //submit form
@@ -96167,11 +96168,27 @@ if (document.getElementById("timing-slots-view")) {
   }); //start and end time pickers for choosing time slot
 
   $(function () {
+    var _this2 = this;
+
     var start_time = $('#start-time').timepicker({
       format: 'HH:MM'
     });
     var end_time = $('#end-time').timepicker({
       format: 'HH:MM'
+    }); //get timing slots against specified doctor
+
+    axios.get('/doctor/timings/show').then(function (res) {
+      //console.log(res);
+      _this2.time_slots = res.data;
+    })["catch"](function (error) {
+      // error.response.status Check status code
+      _this2.is_error_thrown = true;
+      _this2.messages = [];
+
+      _this2.messages.push({
+        message: "There has been an error occurred in the database please contact support."
+      });
+    })["finally"](function () {//Perform action in always
     });
   });
 }

@@ -24,6 +24,7 @@ Route::middleware(['is_doctor'])->group(function () {
         Route::post('/doctor/update/{id}', 'DoctorController@update');
         Route::get('/doctor/timings', 'DoctorController@timingsAndRates');
         Route::post('/doctor/add', 'TimingSlotController@add');
+        Route::get('/doctor/timings/show', 'TimingSlotController@show');
     });
 });
 

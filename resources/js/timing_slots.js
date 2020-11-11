@@ -16,7 +16,8 @@ if(document.getElementById("timing-slots-view")){
             },
             is_error_thrown: false,
             data_success: false,
-            messages: []
+            messages: [],
+            time_slots:[]
         },
         methods: {
             //submit form
@@ -60,6 +61,20 @@ if(document.getElementById("timing-slots-view")){
         });
         var end_time = $('#end-time').timepicker({
             format: 'HH:MM'
+        });
+        //get timing slots against specified doctor
+        axios.get('/doctor/timings/show')
+            .then((res) => {
+                //console.log(res);
+                this.time_slots = res.data
+            })
+            .catch((error) => {
+                // error.response.status Check status code
+                this.is_error_thrown = true;
+                this.messages = [];
+                this.messages.push({message: "There has been an error occurred in the database please contact support."});
+            }).finally(() => {
+            //Perform action in always
         });
     });
 }
