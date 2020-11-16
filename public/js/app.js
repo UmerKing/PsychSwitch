@@ -96116,12 +96116,16 @@ if (document.getElementById("timing-slots-view")) {
         day: '',
         start_time: '',
         end_time: '',
-        treatment_type: ''
+        treatment_type: '',
+        is_add: true,
+        form_type: "Add",
+        id: ''
       },
       is_error_thrown: false,
       data_success: false,
       messages: [],
-      time_slots: []
+      time_slots: [],
+      db_error: "There has been an error occurred in the database please contact support."
     },
     methods: {
       //submit form
@@ -96130,7 +96134,7 @@ if (document.getElementById("timing-slots-view")) {
 
         this.form.start_time = document.getElementById("start-time").value;
         this.form.end_time = document.getElementById("end-time").value;
-        axios.post('/doctor/add', this.form).then(function (res) {
+        axios.post('/doctor/store', this.form).then(function (res) {
           var that = _this;
 
           if (!res.data.success) {
@@ -96145,7 +96149,7 @@ if (document.getElementById("timing-slots-view")) {
             if (_this.messages.length === 0) {
               //if any DB error occurred
               _this.messages.push({
-                message: "There has been an error occurred in the database please contact support."
+                message: _this.db_error
               });
             }
           } else {
@@ -96159,36 +96163,96 @@ if (document.getElementById("timing-slots-view")) {
           _this.messages = [];
 
           _this.messages.push({
-            message: "There has been an error occurred in the database please contact support."
+            message: _this.db_error
           });
         })["finally"](function () {//Perform action in always
         });
+      },
+      formatData: function formatData(data) {
+        //concatenate start and end time to show badges in slot tables
+        var startTime = data.start_time;
+        var start_hour = startTime.split(":");
+        start_hour = start_hour[0];
+        var start_minute = start_hour[1];
+        var end_time = data.end_time;
+        var end_hour = end_time.split(":");
+        end_hour = end_hour[0];
+        var end_minute = end_hour[1];
+        var start_format = start_hour >= 12 ? 'pm' : 'am';
+        var end_format = end_hour >= 12 ? 'pm' : 'am';
+        start_hour = start_hour % 12;
+        start_hour = start_hour ? start_hour : 12;
+        end_hour = end_hour % 12;
+        end_hour = end_hour ? end_hour : 12;
+        start_minute = start_minute < 10 ? '0' + start_minute : start_minute;
+        end_minute = end_minute < 10 ? '0' + end_minute : end_minute;
+        var strTime = start_hour + ':' + start_minute + ' ' + start_format;
+        var endTime = end_hour + ':' + end_minute + ' ' + end_format;
+        return strTime + " to " + endTime;
+      },
+      showDetail: function showDetail(data) {
+        //update form object to bind data of selected slot in form to update record
+        this.form.day = data.day;
+        this.form.start_time = data.start_time;
+        this.form.end_time = data.end_time;
+        this.form.treatment_type = data.treatment_type;
+        this.form.is_add = false;
+        this.form.form_type = "Update";
+        this.form.id = data.id;
+      },
+      resetForm: function resetForm() {
+        //reset form object on closing of update form modal
+        this.form.day = this.form.start_time = this.form.end_time = this.form.treatment_type = "";
+        this.form.is_add = true;
+        this.is_error_thrown = this.data_success = false;
+        this.form.form_type = "Add";
       }
+    },
+    mounted: function mounted() {
+      var _this2 = this;
+
+      //reset form when modal is closed
+      $(this.$refs.slot_modal).on("hidden.bs.modal", this.resetForm); //get timing slots against specified doctor
+
+      axios.get('/doctor/timings/show').then(function (res) {
+        if (!res.data.success) {
+          _this2.is_error_thrown = true;
+          _this2.messages = [];
+          $.each(res.data.data, function (key, value) {
+            that.messages.push({
+              message: value[0]
+            });
+          });
+
+          if (_this2.messages.length === 0) {
+            //if any DB error occurred
+            _this2.messages.push({
+              message: _this2.db_error
+            });
+          }
+        } else {
+          //in case of success
+          _this2.is_error_thrown = false;
+          _this2.time_slots = res.data.data;
+        }
+      })["catch"](function (error) {
+        _this2.is_error_thrown = true;
+        _this2.messages = [];
+
+        _this2.messages.push({
+          message: _this2.db_error
+        });
+      })["finally"](function () {//Perform action in always
+      });
     }
   }); //start and end time pickers for choosing time slot
 
   $(function () {
-    var _this2 = this;
-
     var start_time = $('#start-time').timepicker({
       format: 'HH:MM'
     });
     var end_time = $('#end-time').timepicker({
       format: 'HH:MM'
-    }); //get timing slots against specified doctor
-
-    axios.get('/doctor/timings/show').then(function (res) {
-      //console.log(res);
-      _this2.time_slots = res.data;
-    })["catch"](function (error) {
-      // error.response.status Check status code
-      _this2.is_error_thrown = true;
-      _this2.messages = [];
-
-      _this2.messages.push({
-        message: "There has been an error occurred in the database please contact support."
-      });
-    })["finally"](function () {//Perform action in always
     });
   });
 }

@@ -23,7 +23,7 @@ Route::middleware(['is_doctor'])->group(function () {
         Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
         Route::post('/doctor/update/{id}', 'DoctorController@update');
         Route::get('/doctor/timings', 'DoctorController@timingsAndRates');
-        Route::post('/doctor/add', 'TimingSlotController@add');
+        Route::post('/doctor/store', 'TimingSlotController@store');
         Route::get('/doctor/timings/show', 'TimingSlotController@show');
     });
 });

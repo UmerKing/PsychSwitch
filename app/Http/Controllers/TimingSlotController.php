@@ -22,11 +22,11 @@ class TimingSlotController extends Controller
     }
 
     /**
-     * Create a new slot against doctor
+     * Create a new slot or update existing slot against doctor
      * @param Request $request
      * @return false|\Illuminate\Http\Response|string
      */
-    public function add(Request $request)
+    public function store(Request $request)
     {
         try {
             $doctor = auth()->user();
@@ -42,8 +42,14 @@ class TimingSlotController extends Controller
             if ($validator->fails()) {
                 return ResponseController::sendError('Validation Error.', $validator->errors())->content();
             } else {
-                $timing_slot = TimingSlot::create($input);
-                return ResponseController::sendResponse(new TimingSlotResource($timing_slot), 'Record created successfully.')->content();
+                if ($input["id"]) { //if request for updating the record
+                    $slot = TimingSlot::find($input["id"]);
+                    $slot->update($input);
+                    return ResponseController::sendResponse(true, 'Record updated successfully.')->content();
+                } else { //if request is to create new record
+                    $timing_slot = TimingSlot::create($input);
+                    return ResponseController::sendResponse(new TimingSlotResource($timing_slot), 'Record created successfully.')->content();
+                }
             }
         } catch (RequestException $re) {
             // For handling exception.
@@ -59,14 +65,42 @@ class TimingSlotController extends Controller
      */
     public function show($doctor_id = null)
     {
-        $doctor = auth()->user();
-        $doctor_id = $doctor_id ? $doctor_id : $doctor->id;
-        //$data = Blog::find(1)->delete();
-        $timing_slots = TimingSlot::where('doctor_id', $doctor_id)->withTrashed()->get();
+        try {
+            $doctor = auth()->user();
+            $doctor_id = $doctor_id ? $doctor_id : $doctor->id;
+            //$data = Blog::find(1)->delete();
+            $timing_slots = TimingSlot::where('doctor_id', $doctor_id)->withTrashed()->get();
 
-        if (is_null($timing_slots)) {
-            return $this->sendError('No Record found.');
+            if (is_null($timing_slots)) {
+                return $this->sendError('No Record found.');
+            }
+            //prepare array of all days with time
+            $response = [];
+            $response["monday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "MONDAY";
+            }));
+            $response["tuesday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "TUESDAY";
+            }));
+            $response["wednesday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "WEDNESDAY";
+            }));
+            $response["thursday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "THURSDAY";
+            }));
+            $response["friday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "FRIDAY";
+            }));
+            $response["saturday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "SATURDAY";
+            }));
+            $response["sunday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
+                return $elem["day"] == "SUNDAY";
+            }));
+            return ResponseController::sendResponse($response, 'Data retrieved successfully.');
+        } catch (RequestException $re) {
+            // For handling exception.
+            return json_encode($re);
         }
-        return ResponseController::sendResponse(new TimingSlotResource($timing_slots), 'Data retrieved successfully.');
     }
 }

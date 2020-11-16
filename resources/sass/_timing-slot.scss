@@ -3,16 +3,26 @@
  **/
 
 #timing-slots-view {
-  .card.card-timing-slot {
-    .card-body {
-      .pl-lg-4 {
-        .row {
-          .col-lg-4 {
-            .form-group {
-              .timepicker {
-                .gj-timepicker {
-                  .gj-textbox-md {
-                    border-bottom: none;
+  .col-xl-12 {
+    .card.card-timing-slot {
+      .modal {
+        .modal-dialog {
+          .modal-content {
+            form {
+              .col-lg-12 {
+                .row {
+                  .col-lg-6 {
+                    .form-group {
+                      .timepicker {
+                        .gj-timepicker {
+                          width: 100% !important;
+
+                          .gj-textbox-md {
+                            border-bottom: none !important;
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
