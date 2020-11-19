@@ -73,6 +73,6 @@ class DoctorController extends Controller
      */
     public function timingsAndRates()
     {
-        return view('doctor/timings-and-rates');
+        return view('doctor/timings-and-rates',['is_doctor'=>true]);
     }
 }

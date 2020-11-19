@@ -65,4 +65,13 @@ class DoctorsController extends Controller
         }
         return redirect()->route('admin.doctors.unconfirmed');
     }
+
+    /**
+     * doctor's timing and fee rates view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function timingsAndRates()
+    {
+        return view('admin/doctors/timings-and-rates',['is_doctor'=>false]);
+    }
 }

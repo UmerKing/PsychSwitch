@@ -31,13 +31,14 @@ class TimingSlotController extends Controller
         try {
             $doctor = auth()->user();
             $input = $request->all();
-            $input["doctor_id"] = $doctor->id;
+            $input["doctor_id"] = $input["doctor_id"] ? $input["doctor_id"] : $doctor->id;
             $validator = Validator::make($input, [
                 'day' => 'required',
                 'doctor_id' => 'required',
                 'start_time' => 'required',
                 'end_time' => 'required',
                 'treatment_type' => 'required',
+                'rate' => $input["is_doctor"] ? '' : 'required'
             ]);
             if ($validator->fails()) {
                 return ResponseController::sendError('Validation Error.', $validator->errors())->content();
@@ -45,6 +46,9 @@ class TimingSlotController extends Controller
                 if ($input["id"]) { //if request for updating the record
                     $slot = TimingSlot::find($input["id"]);
                     $slot->update($input);
+                    if(!$input["is_doctor"]) { //if request of update is from admin view
+                        FeeRateController::store($input);
+                    }
                     return ResponseController::sendResponse(true, 'Record updated successfully.')->content();
                 } else { //if request is to create new record
                     $timing_slot = TimingSlot::create($input);
@@ -69,7 +73,8 @@ class TimingSlotController extends Controller
             $doctor = auth()->user();
             $doctor_id = $doctor_id ? $doctor_id : $doctor->id;
             //$data = Blog::find(1)->delete();
-            $timing_slots = TimingSlot::where('doctor_id', $doctor_id)->withTrashed()->get();
+            $timing_slots = TimingSlot::leftJoin('fee_rates', 'fee_rates.timing_slot_id', '=', 'timing_slots.id')->select('timing_slots.*', 'fee_rates.id as rate_id','fee_rates.rate')->where('timing_slots.doctor_id', $doctor_id)
+                ->withTrashed()->get();
 
             if (is_null($timing_slots)) {
                 return $this->sendError('No Record found.');

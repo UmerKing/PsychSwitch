@@ -23,7 +23,6 @@ Route::middleware(['is_doctor'])->group(function () {
         Route::get('/doctor/profile', 'DoctorController@profile')->name('doctor.profile');
         Route::post('/doctor/update/{id}', 'DoctorController@update');
         Route::get('/doctor/timings', 'DoctorController@timingsAndRates');
-        Route::post('/doctor/store', 'TimingSlotController@store');
         Route::get('/doctor/timings/show', 'TimingSlotController@show');
     });
 });
@@ -34,7 +33,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/doctors/registered', 'Admin\Doctors\DoctorsController@registered')->name('admin.doctors.registered');
         Route::get('/doctors/{doctor_id}/approve', 'Admin\Doctors\DoctorsController@approve')->name('admin.doctors.approve');
         Route::get('/doctors/{id}/profile', 'Admin\Doctors\DoctorsController@profile')->name('admin.doctors.profile');
+        Route::get('/doctors/{id}/timing', 'Admin\Doctors\DoctorsController@timingsAndRates')->name('admin.doctors.timingsandrates');
+        Route::get('/doctor/{doctor_id}/timings/show', 'TimingSlotController@show');
         Route::get('/admin', 'Admin\DashboardController@index')->name('index');
         Route::get('/doctors/{notification_id}/markread', 'Admin\Doctors\DoctorsController@markRead')->name('admin.doctors.markread');
+    });
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['is_shared'])->group(function () {
+        Route::post('/doctor/store', 'TimingSlotController@store');
     });
 });

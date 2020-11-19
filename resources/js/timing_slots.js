@@ -13,9 +13,13 @@ if (document.getElementById("timing-slots-view")) {
                 start_time: '',
                 end_time: '',
                 treatment_type: '',
+                rate: '',
                 is_add: true,
                 form_type: "Add",
-                id: ''
+                id: '',
+                rate_id: '',
+                doctor_id: '',
+                is_doctor: true
             },
             is_error_thrown: false,
             data_success: false,
@@ -24,16 +28,22 @@ if (document.getElementById("timing-slots-view")) {
             db_error: "There has been an error occurred in the database please contact support."
         },
         methods: {
-            //submit form
             submitForm() {
+                var route = location.pathname.split("/");
+                var doctor_id = null;
+                if (route.length === 4) { //request is of update from admin side
+                    doctor_id = route[2];
+                    this.form.is_doctor = false;
+                }
                 this.form.start_time = document.getElementById("start-time").value;
                 this.form.end_time = document.getElementById("end-time").value;
+                this.form.doctor_id = doctor_id;
                 axios.post('/doctor/store', this.form)
                     .then((res) => {
+                        this.resetVariables();
                         var that = this;
                         if (!res.data.success) {
                             this.is_error_thrown = true;
-                            this.messages = [];
                             $.each(res.data.data, function (key, value) {
                                 that.messages.push({message: value[0]});
                             });
@@ -42,13 +52,11 @@ if (document.getElementById("timing-slots-view")) {
                             }
                         } else { //in case of success
                             this.data_success = true;
-                            this.is_error_thrown = false;
                         }
                     })
                     .catch((error) => {
                         // error.response.status Check status code
                         this.is_error_thrown = true;
-                        this.messages = [];
                         this.messages.push({message: this.db_error});
                     }).finally(() => {
                     //Perform action in always
@@ -83,6 +91,8 @@ if (document.getElementById("timing-slots-view")) {
                 this.form.treatment_type = data.treatment_type;
                 this.form.is_add = false;
                 this.form.form_type = "Update";
+                this.form.rate = data.rate;
+                this.form.rate_id = data.rate_id;
                 this.form.id = data.id;
             },
             resetForm() { //reset form object on closing of update form modal
@@ -90,35 +100,54 @@ if (document.getElementById("timing-slots-view")) {
                 this.form.is_add = true;
                 this.is_error_thrown = this.data_success = false;
                 this.form.form_type = "Add";
+            },
+            resetVariables() { //reset variables
+                this.data_success = false;
+                this.is_error_thrown = false;
+                this.messages = [];
+            },
+            getDoctor(doctor_id) { //get timing slots against specified doctor
+                var url = "/doctor/timings/show";
+                if (doctor_id) { //if doctor_id found it means admin view is loaded
+                    url = '/doctor/' + doctor_id + "/timings/show";
+                } else {
+                    this.form.is_doctor = true;
+                }
+                axios.get(url)
+                    .then((res) => {
+                        if (!res.data.success) {
+                            this.is_error_thrown = true;
+                            this.messages = [];
+                            $.each(res.data.data, function (key, value) {
+                                that.messages.push({message: value[0]});
+                            });
+                            if (this.messages.length === 0) { //if any DB error occurred
+                                this.messages.push({message: this.db_error});
+                            }
+                        } else { //in case of success
+                            this.is_error_thrown = false;
+                            this.time_slots = res.data.data;
+                        }
+                    })
+                    .catch((error) => {
+                        this.is_error_thrown = true;
+                        this.messages = [];
+                        this.messages.push({message: this.db_error});
+                    }).finally(() => {
+                    //Perform action in always
+                });
             }
         },
         mounted() {
             //reset form when modal is closed
             $(this.$refs.slot_modal).on("hidden.bs.modal", this.resetForm);
             //get timing slots against specified doctor
-            axios.get('/doctor/timings/show')
-                .then((res) => {
-                    if (!res.data.success) {
-                        this.is_error_thrown = true;
-                        this.messages = [];
-                        $.each(res.data.data, function (key, value) {
-                            that.messages.push({message: value[0]});
-                        });
-                        if (this.messages.length === 0) { //if any DB error occurred
-                            this.messages.push({message: this.db_error});
-                        }
-                    } else { //in case of success
-                        this.is_error_thrown = false;
-                        this.time_slots = res.data.data;
-                    }
-                })
-                .catch((error) => {
-                    this.is_error_thrown = true;
-                    this.messages = [];
-                    this.messages.push({message: this.db_error});
-                }).finally(() => {
-                //Perform action in always
-            });
+            var route = location.pathname.split("/");
+            var doctor_id = null;
+            if (route.length === 4) {
+                doctor_id = route[2];
+            }
+            this.getDoctor(doctor_id);
         },
     });
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FeeRates extends Model
 {
+    public $timestamps = false;
     use SoftDeletes;
 
     /**
