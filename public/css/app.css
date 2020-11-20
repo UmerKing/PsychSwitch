@@ -13612,6 +13612,10 @@ a.text-dark:focus {
  * SASS for Timings slots page created on 28 October, 2020
  **/
 
+#timing-slots-view .col-xl-12 .card.card-timing-slot .card-body table tr td {
+  width: 100%;
+}
+
 #timing-slots-view .col-xl-12 .card.card-timing-slot .modal .modal-dialog .modal-content form .col-lg-12 .row .col-lg-6 .form-group .timepicker .gj-timepicker {
   width: 100% !important;
 }

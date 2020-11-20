@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="alert alert-success alert-block" v-if="data_success" v-cloak>
                                     <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>New Record has been created successfully.</strong>
+                                    <strong>@{{ success_message }}</strong>
                                 </div>
                                 <div class="col col-lg-12">
                                     <div class="row">
@@ -158,7 +158,7 @@
                                                 <label class="form-control-label" for="input-start-time">Start
                                                     Time</label>
                                                 <div class="form-control timepicker">
-                                                    <input class="time-picker start-time" v-model="form.start_time"
+                                                    <input class="time-picker start-time"
                                                            id="start-time" width="276" name="start-time"/>
                                                 </div>
                                             </div>
@@ -172,7 +172,7 @@
                                                 <label class="form-control-label" for="input-end-time">End Time</label>
                                                 <div class="form-control timepicker">
                                                     <input class="time-picker end-time" id="end-time"
-                                                           v-model="form.end_time" width="276" name="end-time"/>
+                                                            width="276" name="end-time"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -180,7 +180,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-treatment-type">Treatment
                                                     Type</label>
-                                                <select class="form-control @error('treatment_type') is-invalid @enderror"
+                                                <select class="form-control"
                                                         id="treatment_type"
                                                         name="treatment_type" autocomplete="treatment_type"
                                                         v-model="form.treatment_type">
@@ -196,7 +196,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label class="form-control-label" for="inputrate">Fee Rate</label>
+                                                    <label class="form-control-label" for="input-rate">Fee Rate</label>
                                                     <input type="text" id="rate" name="rate"
                                                            class="form-control form-control-alternative"
                                                            v-model="form.rate"/>

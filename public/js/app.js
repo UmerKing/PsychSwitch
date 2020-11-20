@@ -96129,7 +96129,8 @@ if (document.getElementById("timing-slots-view")) {
       data_success: false,
       messages: [],
       time_slots: [],
-      db_error: "There has been an error occurred in the database please contact support."
+      db_error: "There has been an error occurred in the database please contact support.",
+      success_message: ''
     },
     methods: {
       submitForm: function submitForm() {
@@ -96144,9 +96145,9 @@ if (document.getElementById("timing-slots-view")) {
           this.form.is_doctor = false;
         }
 
-        this.form.start_time = document.getElementById("start-time").value;
-        this.form.end_time = document.getElementById("end-time").value;
         this.form.doctor_id = doctor_id;
+        this.form.end_time = document.getElementById("end-time").value;
+        this.form.start_time = document.getElementById("start-time").value;
         axios.post('/doctor/store', this.form).then(function (res) {
           _this.resetVariables();
 
@@ -96169,6 +96170,8 @@ if (document.getElementById("timing-slots-view")) {
           } else {
             //in case of success
             _this.data_success = true;
+            _this.time_slots = res.data.data;
+            _this.success_message = res.data.message;
           }
         })["catch"](function (error) {
           // error.response.status Check status code
@@ -96183,13 +96186,13 @@ if (document.getElementById("timing-slots-view")) {
       formatData: function formatData(data) {
         //concatenate start and end time to show badges in slot tables
         var startTime = data.start_time;
-        var start_hour = startTime.split(":");
-        start_hour = start_hour[0];
-        var start_minute = start_hour[1];
+        var start_array = startTime.split(":");
+        var start_hour = start_array[0];
+        var start_minute = start_array[1];
         var end_time = data.end_time;
-        var end_hour = end_time.split(":");
-        end_hour = end_hour[0];
-        var end_minute = end_hour[1];
+        var end_array = end_time.split(":");
+        var end_hour = end_array[0];
+        var end_minute = end_array[1];
         var start_format = start_hour >= 12 ? 'pm' : 'am';
         var end_format = end_hour >= 12 ? 'pm' : 'am';
         start_hour = start_hour % 12;
@@ -96213,13 +96216,18 @@ if (document.getElementById("timing-slots-view")) {
         this.form.rate = data.rate;
         this.form.rate_id = data.rate_id;
         this.form.id = data.id;
+        document.getElementById("end-time").value = this.form.end_time;
+        document.getElementById("start-time").value = this.form.start_time;
       },
       resetForm: function resetForm() {
         //reset form object on closing of update form modal
-        this.form.day = this.form.start_time = this.form.end_time = this.form.treatment_type = "";
+        this.form.day = this.form.start_time = this.form.end_time = this.form.treatment_type = this.form.id = this.form.rate_id = this.form.doctor_id = "";
         this.form.is_add = true;
-        this.is_error_thrown = this.data_success = false;
+        this.is_error_thrown = false;
         this.form.form_type = "Add";
+        this.data_success = false;
+        document.getElementById("end-time").value = "";
+        document.getElementById("start-time").value = "";
       },
       resetVariables: function resetVariables() {
         //reset variables
@@ -96274,7 +96282,14 @@ if (document.getElementById("timing-slots-view")) {
     },
     mounted: function mounted() {
       //reset form when modal is closed
-      $(this.$refs.slot_modal).on("hidden.bs.modal", this.resetForm); //get timing slots against specified doctor
+      $(this.$refs.slot_modal).on("hidden.bs.modal", this.resetForm); //initiate time pickers
+
+      var start_time = $('#start-time').timepicker({
+        format: 'HH:MM'
+      });
+      var end_time = $('#end-time').timepicker({
+        format: 'HH:MM'
+      }); //get timing slots against specified doctor
 
       var route = location.pathname.split("/");
       var doctor_id = null;
@@ -96285,15 +96300,6 @@ if (document.getElementById("timing-slots-view")) {
 
       this.getDoctor(doctor_id);
     }
-  }); //start and end time pickers for choosing time slot
-
-  $(function () {
-    var start_time = $('#start-time').timepicker({
-      format: 'HH:MM'
-    });
-    var end_time = $('#end-time').timepicker({
-      format: 'HH:MM'
-    });
   });
 }
 

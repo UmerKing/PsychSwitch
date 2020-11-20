@@ -5,6 +5,16 @@
 #timing-slots-view {
   .col-xl-12 {
     .card.card-timing-slot {
+      .card-body {
+        table {
+          tr {
+            td {
+              width: 100%;
+            }
+          }
+        }
+      }
+
       .modal {
         .modal-dialog {
           .modal-content {

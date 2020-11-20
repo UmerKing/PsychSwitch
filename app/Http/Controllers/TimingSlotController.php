@@ -49,10 +49,10 @@ class TimingSlotController extends Controller
                     if(!$input["is_doctor"]) { //if request of update is from admin view
                         FeeRateController::store($input);
                     }
-                    return ResponseController::sendResponse(true, 'Record updated successfully.')->content();
+                    return ResponseController::sendResponse($this->show($input["doctor_id"], false), 'Record updated successfully.')->content();
                 } else { //if request is to create new record
                     $timing_slot = TimingSlot::create($input);
-                    return ResponseController::sendResponse(new TimingSlotResource($timing_slot), 'Record created successfully.')->content();
+                    return ResponseController::sendResponse($this->show($input["doctor_id"], false), 'Record created successfully.')->content();
                 }
             }
         } catch (RequestException $re) {
@@ -67,7 +67,7 @@ class TimingSlotController extends Controller
      * @param null $doctor_id
      * @return \Illuminate\Http\Response
      */
-    public function show($doctor_id = null)
+    public function show($doctor_id = null, $formatted_json = true)
     {
         try {
             $doctor = auth()->user();
@@ -102,6 +102,9 @@ class TimingSlotController extends Controller
             $response["sunday"] = array_values(array_filter($timing_slots->toArray(), function ($elem) {
                 return $elem["day"] == "SUNDAY";
             }));
+            if(!$formatted_json)
+                return $response;
+
             return ResponseController::sendResponse($response, 'Data retrieved successfully.');
         } catch (RequestException $re) {
             // For handling exception.
