@@ -69,6 +69,7 @@
                         <div class="row align-items-center">
                             <div class="col-8">
                                 <h3 class="mb-0">{{$doctor["name"] . " Profile"}}</h3>
+                                <a href="{{url("doctors/" . $doctor->id . "/timing")}}">View Available Time Slots and Fee Rates</a>
                             </div>
                             <div class="col-4 text-right">
                             </div>
