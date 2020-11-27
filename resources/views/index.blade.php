@@ -418,60 +418,19 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="expert_active owl-carousel">
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/1.png')}}" alt="">
+                        @foreach($doctors as $doctor)
+                            <div class="single_expert">
+                                <div class="expert_thumb">
+                                    <a href="{{url("/".$doctor->id . "/book-appointment")}}">
+                                    <img src="{{asset('images/'.$doctor->avatar)}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="experts_name text-center">
+                                    <h3>{{$doctor->name}}</h3>
+                                    <span>{{$doctor->speciality_name}}</span>
+                                </div>
                             </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/2.png')}}" alt="">
-                            </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/3.png')}}" alt="">
-                            </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/4.png')}}" alt="">
-                            </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/1.png')}}" alt="">
-                            </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
-                        <div class="single_expert">
-                            <div class="expert_thumb">
-                                <img src="{{asset('images/experts/2.png')}}" alt="">
-                            </div>
-                            <div class="experts_name text-center">
-                                <h3>Mirazul Alom</h3>
-                                <span>Neurologist</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

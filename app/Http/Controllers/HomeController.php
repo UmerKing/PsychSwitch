@@ -24,6 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $doctors = User::whereNotNull('approved_at')->where("type", "doctor")->select('doctor_profiles.*', 'users.*', 'specialities.name as speciality_name')->
+                   join("doctor_profiles",'doctor_profiles.user_id','=','users.id')->
+                   join("specialities",'specialities.id','=','doctor_profiles.speciality_id')->get();
         if (Auth::check()) {
             $user = new User();
             if ($user->isAdmin()) {
@@ -34,9 +37,9 @@ class HomeController extends Controller
                 else
                     return view('doctor/dashboard');
             }
-            return view('index');
+            return view('index',compact('doctors'));
         }
-        return view('index');
+        return view('index',compact('doctors'));
     }
 
     /**

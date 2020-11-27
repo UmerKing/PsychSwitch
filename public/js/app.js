@@ -95865,7 +95865,9 @@ __webpack_require__(/*! ./register */ "./resources/js/register.js");
 
 __webpack_require__(/*! ./doctor_profile */ "./resources/js/doctor_profile.js");
 
-__webpack_require__(/*! ./timing_slots */ "./resources/js/timing_slots.js"); //window.Vue = require('vue');
+__webpack_require__(/*! ./timing_slots */ "./resources/js/timing_slots.js");
+
+__webpack_require__(/*! ./book_appointment */ "./resources/js/book_appointment.js"); //window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -95883,6 +95885,101 @@ __webpack_require__(/*! ./timing_slots */ "./resources/js/timing_slots.js"); //w
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+/***/ }),
+
+/***/ "./resources/js/book_appointment.js":
+/*!******************************************!*\
+  !*** ./resources/js/book_appointment.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/**
+ * Js for Timings slots page created on 22 October, 2020-->
+ **/
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+if (document.getElementById("page-book-appointment")) {
+  Vue.prototype.$book_appointment = new Vue({
+    el: '#page-book-appointment',
+    data: {
+      time_slots: [],
+      treatment_types: [],
+      booking: false,
+      is_error: false,
+      error_message: 'Something went wrong'
+    },
+    methods: {
+      getAvailableTimeSlots: function getAvailableTimeSlots(doctor_id, event) {
+        var _this = this;
+
+        //get available time slots against selected day
+        axios.post('/doctor/get-slots', {
+          'doctor_id': doctor_id,
+          'day': event.target.value
+        }).then(function (res) {
+          _this.time_slots = res.data.data;
+
+          if (_this.time_slots.length === 0) {
+            _this.is_error = true;
+            _this.error_message = "Unfortunately! Doctor is not available on this day please choose any other day";
+          } else {
+            _this.is_error = false;
+          }
+        })["catch"](function (error) {
+          // error.response.status Check status code
+          _this.is_error = true;
+        })["finally"](function () {//Perform action in always
+        });
+      },
+      filterTypes: function filterTypes(event) {
+        //filter treatment type for dropdown against selected time slot
+        var time = event.target.value.split("-");
+        var array = this.time_slots.filter(function (data) {
+          return data.start_time.match(time[0].trim()) && data.end_time.match(time[1].trim());
+        });
+        this.treatment_types = array.map(function (drink) {
+          return drink.treatment_type === "1" ? "Video Call" : "In Clinic";
+        });
+        this.removeDuplicates();
+      },
+      removeDuplicates: function removeDuplicates() {
+        //remove duplicates from array
+        this.treatment_types = _toConsumableArray(new Set(this.treatment_types));
+      },
+      activateBooking: function activateBooking(value) {
+        //toggle booking status
+        this.booking = value;
+      },
+      submitForm: function submitForm() {//submit form
+        // console.log(this.form);
+        // axios.post('/doctor/store', this.form)
+        //     .then((res) => {
+        //
+        //     })
+        //     .catch((error) => {
+        //         // error.response.status Check status code
+        //
+        //     }).finally(() => {
+        //     //Perform action in always
+        // });
+      }
+    }
+  });
+}
 
 /***/ }),
 

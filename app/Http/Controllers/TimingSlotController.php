@@ -18,7 +18,7 @@ class TimingSlotController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'verified']);
+        //$this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -110,5 +110,22 @@ class TimingSlotController extends Controller
             // For handling exception.
             return json_encode($re);
         }
+    }
+
+    /**
+     * get timing slots against doctor id and selected day
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getSlots(Request $request) {
+        $data = $request->all();
+        $timing_slots = TimingSlot::where('doctor_id', $data['doctor_id'])->where('day',$data['day'])
+            ->withTrashed()->get();
+
+        if (is_null($timing_slots)) {
+            return $this->sendError('No Record found.');
+        }
+
+        return ResponseController::sendResponse($timing_slots, 'Data retrieved successfully.');
     }
 }

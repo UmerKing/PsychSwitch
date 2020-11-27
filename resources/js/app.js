@@ -29,6 +29,7 @@ require('./global');
 require('./register');
 require('./doctor_profile');
 require('./timing_slots');
+require('./book_appointment');
 
 
 //window.Vue = require('vue');
