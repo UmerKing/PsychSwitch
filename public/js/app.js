@@ -95895,18 +95895,6 @@ __webpack_require__(/*! ./book_appointment */ "./resources/js/book_appointment.j
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 /**
  * Js for Timings slots page created on 22 October, 2020-->
  **/
@@ -95918,64 +95906,134 @@ if (document.getElementById("page-book-appointment")) {
     data: {
       time_slots: [],
       treatment_types: [],
-      booking: false,
+      is_booking_active: false,
       is_error: false,
-      error_message: 'Something went wrong'
+      is_payment_active: false,
+      db_error: "There has been an error occurred in the database please contact support.",
+      messages: [],
+      data_success: false,
+      success_message: '',
+      form: {
+        appointment_date: '',
+        timing_slot_id: '',
+        name: '',
+        email: '',
+        phone: ''
+      },
+      weekday: {
+        0: "SUNDAY",
+        1: "MONDAY",
+        2: "TUESDAY",
+        3: "WEDNESDAY",
+        4: "THURSDAY",
+        5: "FRIDAY",
+        6: "SATURDAY"
+      }
     },
     methods: {
       getAvailableTimeSlots: function getAvailableTimeSlots(doctor_id, event) {
         var _this = this;
 
         //get available time slots against selected day
+        var day = new Date(event.target.value);
+        this.messages = [];
         axios.post('/doctor/get-slots', {
           'doctor_id': doctor_id,
-          'day': event.target.value
+          'day': this.weekday[day.getDay()]
         }).then(function (res) {
           _this.time_slots = res.data.data;
 
           if (_this.time_slots.length === 0) {
             _this.is_error = true;
-            _this.error_message = "Unfortunately! Doctor is not available on this day please choose any other day";
+
+            _this.messages.push({
+              message: "Unfortunately! Doctor is not available on this day please choose any other day"
+            });
           } else {
             _this.is_error = false;
           }
+
+          _this.removeDuplicates("slot");
         })["catch"](function (error) {
-          // error.response.status Check status code
+          //if any error occurs on server side
           _this.is_error = true;
-        })["finally"](function () {//Perform action in always
+
+          _this.messages.push({
+            message: _this.db_error
+          });
         });
       },
       filterTypes: function filterTypes(event) {
         //filter treatment type for dropdown against selected time slot
         var time = event.target.value.split("-");
-        var array = this.time_slots.filter(function (data) {
+        this.treatment_types = this.time_slots.filter(function (data) {
           return data.start_time.match(time[0].trim()) && data.end_time.match(time[1].trim());
         });
-        this.treatment_types = array.map(function (drink) {
-          return drink.treatment_type === "1" ? "Video Call" : "In Clinic";
-        });
-        this.removeDuplicates();
+        this.removeDuplicates("type");
       },
-      removeDuplicates: function removeDuplicates() {
-        //remove duplicates from array
-        this.treatment_types = _toConsumableArray(new Set(this.treatment_types));
+      removeDuplicates: function removeDuplicates(param) {
+        //remove duplicates from arrays
+        switch (param) {
+          case "slot":
+            this.time_slots = _.uniqBy(this.time_slots, function (p) {
+              return p.start_time && p.end_time;
+            });
+            break;
+
+          case "type":
+            this.treatment_types = _.uniqBy(this.treatment_types, function (p) {
+              return p.treatment_type;
+            });
+            break;
+
+          default: //
+
+        }
       },
       activateBooking: function activateBooking(value) {
         //toggle booking status
-        this.booking = value;
+        this.is_booking_active = value;
+        this.is_error = false;
       },
-      submitForm: function submitForm() {//submit form
-        // console.log(this.form);
-        // axios.post('/doctor/store', this.form)
-        //     .then((res) => {
-        //
-        //     })
-        //     .catch((error) => {
-        //         // error.response.status Check status code
-        //
-        //     }).finally(() => {
-        //     //Perform action in always
-        // });
+      submitForm: function submitForm() {
+        var _this2 = this;
+
+        //submit form
+        var e = document.getElementById("type");
+        this.form.timing_slot_id = e.value;
+        this.messages = [];
+        axios.post('/appointment/store', this.form).then(function (res) {
+          var that = _this2;
+
+          if (!res.data.success) {
+            _this2.is_error = true;
+            $.each(res.data.data, function (key, value) {
+              that.messages.push({
+                message: value[0]
+              });
+            });
+
+            if (_this2.messages.length === 0) {
+              //if any DB error occurred
+              _this2.messages.push({
+                message: _this2.db_error
+              });
+            }
+          } else {
+            //in case of success
+            _this2.is_error = false;
+            _this2.data_success = true;
+            _this2.success_message = res.data.message;
+            _this2.is_payment_active = true;
+          }
+        })["catch"](function (error) {
+          //if any error occurs on server side
+          _this2.is_error = true;
+
+          _this2.messages.push({
+            message: _this2.db_error
+          });
+        });
       }
     }
   });
