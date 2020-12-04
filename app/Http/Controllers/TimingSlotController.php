@@ -120,6 +120,7 @@ class TimingSlotController extends Controller
     public function getSlots(Request $request) {
         $data = $request->all();
         $timing_slots = TimingSlot::where('doctor_id', $data['doctor_id'])->where('day',$data['day'])
+            ->join("fee_rates", 'fee_rates.timing_slot_id', '=', 'timing_slots.id')
             ->withTrashed()->get();
 
         if (is_null($timing_slots)) {

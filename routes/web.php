@@ -19,7 +19,7 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::get('/{doctor_id}/book-appointment', 'BookAppointmentController@index')->name('index');
 Route::post('/doctor/get-slots', 'TimingSlotController@getslots');
 Route::post('/appointment/store', 'AppointmentController@store');
-
+Route::post('/appointment/payment','PaymentController@makePayment');
 
 Route::middleware(['is_doctor'])->group(function () {
     Route::get('/approval', 'HomeController@approval')->name('approval');

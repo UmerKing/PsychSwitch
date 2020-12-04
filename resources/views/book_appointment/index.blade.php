@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-9 mt-sm-20">
                         <button href="#" class="genric-btn success circle e-large"
-                                v-if="!is_booking_active && !is_payment_active"
+                                v-if="!is_booking_active"
                                 v-on:click="activateBooking(true)">Book Appointment
                         </button>
                         <div class="alert alert-danger alert-block" v-if="is_error" v-cloak>
@@ -49,13 +49,13 @@
                                 <li v-for="message in messages">@{{ message.message }}</li>
                             </ul>
                         </div>
-                        <div class="alert alert-success alert-block" v-if="data_success" v-cloak>
+                        <div class="alert alert-success alert-block mt-10" v-if="data_success" v-cloak>
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>@{{ success_message }}</strong>
                         </div>
                         <form v-on:submit.prevent="submitForm">
                             @csrf
-                            <div class="row" v-if="is_booking_active && !is_payment_active">
+                            <div class="row" v-if="is_booking_active">
                                 <div class="col-lg-12 col-md-12">
                                     <div class="mt-10 row">
                                         <div class="col col-lg-6 col-md-6">
@@ -71,7 +71,7 @@
                                             <select class="form-control" id="time-slots" required
                                                     name="time-slots" v-on:change="filterTypes($event)">
                                                 <option value="">Please Select time slot</option>
-                                                <option v-for="data in time_slots">@{{ data.start_time }} - @{{
+                                                <option v-for="data in unique_slots">@{{ data.start_time }} - @{{
                                                     data.end_time }}
                                                 </option>
                                             </select>
@@ -81,8 +81,9 @@
                                         <div class="col col-lg-6 col-md-6">
                                             <label class="form-control-label" for="input-type">Treatment Type</label>
                                             <select class="form-control" id="type" required
-                                                    name="type" autocomplete="type">
-                                                <option v-for="data in treatment_types" v-bind:value="data.id">@{{
+                                                    name="type" autocomplete="type" v-on:change="updateAmount($event)">
+                                                <option v-for="data in treatment_types"
+                                                        v-bind:value="data.timing_slot_id">@{{
                                                     data.treatment_type == "1" ? "Video Call" : "In Clinic" }}
                                                 </option>
                                             </select>
@@ -111,19 +112,52 @@
                                                    class="single-input" v-model="form.phone">
                                         </div>
                                     </div>
+                                    <div class="mt-10 row">
+                                        <div class="col col-lg-6 col-md-6">
+                                            <label class='control-label'>Card Number</label>
+                                            <input autocomplete='off' class='form-control card-number' size='20'
+                                                   type='text' name="card_no" v-model="form.card_num" required>
+                                        </div>
+                                    </div>
+                                    <div class='mt-10 form-row'>
+                                        <div class='col-xs-4 form-group cvc required'>
+                                            <label class='control-label'>CVV</label>
+                                            <input autocomplete='off' class='form-control card-cvc'
+                                                   placeholder='ex. 311' size='4' type='text' name="cvvNumber"
+                                                   v-model="form.cvv" required>
+                                        </div>
+                                        <div class='col-xs-4 form-group expiration required'>
+                                            <label class='control-label'>Expiration</label>
+                                            <input class='form-control card-expiry-month' placeholder='MM' size='4'
+                                                   type='text' name="ccExpiryMonth" v-model="form.expiry_month"
+                                                   required>
+                                        </div>
+                                        <div class='col-xs-4 form-group expiration required'>
+                                            <label class='control-label'> Year </label>
+                                            <input class='form-control card-expiry-year' placeholder='YYYY' size='4'
+                                                   type='text' name="ccExpiryYear" v-model="form.expiry_year" required>
+                                            <input class='form-control card-expiry-year' placeholder='YYYY' size='4'
+                                                   type='hidden' name="amount" v-model="form.amount">
+                                        </div>
+                                    </div>
+                                    <div class='mt-10 form-row'>
+                                        <div class='col-md-3'>
+                                            <div class='form-control total btn btn-primary'>
+                                                Total:
+                                                <span class='amount'>@{{ form.amount }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button href="#" class="genric-btn success circle mt-10"
-                                    v-if="is_booking_active && !is_payment_active"
+                                    v-if="is_booking_active"
                             >Book Appointment
                             </button>
                             <button href="#" class="genric-btn danger circle mt-10"
-                                    v-if="is_booking_active && !is_payment_active"
+                                    v-if="is_booking_active"
                                     v-on:click="activateBooking(false)">Cancel
                             </button>
-                        </form>
-                        <form v-if="is_payment_active">
-                            Payment form
                         </form>
                     </div>
                 </div>

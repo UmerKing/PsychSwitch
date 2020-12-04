@@ -9,10 +9,10 @@ if (document.getElementById("page-book-appointment")) {
         el: '#page-book-appointment',
         data: {
             time_slots: [],
+            unique_slots: [],
             treatment_types: [],
             is_booking_active: false,
             is_error: false,
-            is_payment_active: false,
             db_error: "There has been an error occurred in the database please contact support.",
             messages: [],
             data_success: false,
@@ -22,7 +22,12 @@ if (document.getElementById("page-book-appointment")) {
                 timing_slot_id: '',
                 name: '',
                 email: '',
-                phone: ''
+                phone: '',
+                card_num:'',
+                cvv:'',
+                expiry_month:'',
+                expiry_year:'',
+                amount:0
             },
             weekday: {
                 0: "SUNDAY",
@@ -61,11 +66,13 @@ if (document.getElementById("page-book-appointment")) {
                         return data.start_time.match(time[0].trim()) && data.end_time.match(time[1].trim())
                     });
                 this.removeDuplicates("type");
+                this.form.amount =  this.treatment_types[0].rate;
+
             },
             removeDuplicates(param) { //remove duplicates from arrays
                 switch (param) {
                     case "slot":
-                        this.time_slots = _.uniqBy(this.time_slots, function (p) {
+                        this.unique_slots = _.uniqBy(this.time_slots, function (p) {
                             return p.start_time && p.end_time;
                         });
                         break;
@@ -82,6 +89,12 @@ if (document.getElementById("page-book-appointment")) {
                 this.is_booking_active = value;
                 this.is_error = false;
             },
+            updateAmount(event) { //set ampunt to be paid at time of booking
+                this.form.amount = this.time_slots
+                    .filter((data) => {
+                        return data.timing_slot_id ===  parseInt(event.target.value);
+                    })[0].rate;
+            },
             submitForm() { //submit form
                 var e = document.getElementById("type");
                 this.form.timing_slot_id = e.value;
@@ -91,17 +104,19 @@ if (document.getElementById("page-book-appointment")) {
                         var that = this;
                         if (!res.data.success) {
                             this.is_error = true;
-                            $.each(res.data.data, function (key, value) {
-                                that.messages.push({message: value[0]});
-                            });
-                            if (this.messages.length === 0) { //if any DB error occurred
-                                this.messages.push({message: this.db_error});
+                            if(typeof(res.data.data) === "object") {
+                                $.each(res.data.data, function (key, value) {
+                                    that.messages.push({message: value[0]});
+                                });
+                            }
+                            else {
+                                this.messages.push({message: res.data.data});
                             }
                         } else { //in case of success
                             this.is_error = false;
                             this.data_success = true;
                             this.success_message = res.data.message;
-                            this.is_payment_active = true;
+                            this.is_booking_active = false;
                         }
                     })
                     .catch((error) => { //if any error occurs on server side

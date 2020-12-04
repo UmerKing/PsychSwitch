@@ -23,18 +23,24 @@ class AppointmentController extends Controller
                 'timing_slot_id' => 'required | integer',
                 'name' => 'required | string',
                 'email' => 'required',
-                'phone' => 'required',
-                'appointment_date' => 'required'
+                'phone' => 'required | integer',
+                'appointment_date' => 'required',
+                'card_num' => 'required',
+                'expiry_month' => 'required',
+                'expiry_year' => 'required',
+                'cvv' => 'required',
+                'amount' => 'required',
             ]);
             if ($validator->fails()) {
                 return ResponseController::sendError('Validation Error.', $validator->errors())->content();
             } else {
                 Appointments::create($input);
-                return ResponseController::sendResponse(true, 'Information is submitted successfully, please complete the payment process to finalize your appointment.')->content();
+                $payment = new PaymentController();
+                return $payment->makePayment($request);
             }
-        } catch (RequestException $re) {
+        } catch (RequestException $e) {
             // For handling exception.
-            return json_encode($re);
+            return ResponseController::sendError('Validation Error.', $e->getMessage())->content();
         }
     }
 }

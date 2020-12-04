@@ -95895,6 +95895,8 @@ __webpack_require__(/*! ./book_appointment */ "./resources/js/book_appointment.j
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /**
  * Js for Timings slots page created on 22 October, 2020-->
  **/
@@ -95905,10 +95907,10 @@ if (document.getElementById("page-book-appointment")) {
     el: '#page-book-appointment',
     data: {
       time_slots: [],
+      unique_slots: [],
       treatment_types: [],
       is_booking_active: false,
       is_error: false,
-      is_payment_active: false,
       db_error: "There has been an error occurred in the database please contact support.",
       messages: [],
       data_success: false,
@@ -95918,7 +95920,12 @@ if (document.getElementById("page-book-appointment")) {
         timing_slot_id: '',
         name: '',
         email: '',
-        phone: ''
+        phone: '',
+        card_num: '',
+        cvv: '',
+        expiry_month: '',
+        expiry_year: '',
+        amount: 0
       },
       weekday: {
         0: "SUNDAY",
@@ -95970,12 +95977,13 @@ if (document.getElementById("page-book-appointment")) {
           return data.start_time.match(time[0].trim()) && data.end_time.match(time[1].trim());
         });
         this.removeDuplicates("type");
+        this.form.amount = this.treatment_types[0].rate;
       },
       removeDuplicates: function removeDuplicates(param) {
         //remove duplicates from arrays
         switch (param) {
           case "slot":
-            this.time_slots = _.uniqBy(this.time_slots, function (p) {
+            this.unique_slots = _.uniqBy(this.time_slots, function (p) {
               return p.start_time && p.end_time;
             });
             break;
@@ -95995,6 +96003,12 @@ if (document.getElementById("page-book-appointment")) {
         this.is_booking_active = value;
         this.is_error = false;
       },
+      updateAmount: function updateAmount(event) {
+        //set ampunt to be paid at time of booking
+        this.form.amount = this.time_slots.filter(function (data) {
+          return data.timing_slot_id === parseInt(event.target.value);
+        })[0].rate;
+      },
       submitForm: function submitForm() {
         var _this2 = this;
 
@@ -96007,16 +96021,16 @@ if (document.getElementById("page-book-appointment")) {
 
           if (!res.data.success) {
             _this2.is_error = true;
-            $.each(res.data.data, function (key, value) {
-              that.messages.push({
-                message: value[0]
-              });
-            });
 
-            if (_this2.messages.length === 0) {
-              //if any DB error occurred
+            if (_typeof(res.data.data) === "object") {
+              $.each(res.data.data, function (key, value) {
+                that.messages.push({
+                  message: value[0]
+                });
+              });
+            } else {
               _this2.messages.push({
-                message: _this2.db_error
+                message: res.data.data
               });
             }
           } else {
@@ -96024,7 +96038,7 @@ if (document.getElementById("page-book-appointment")) {
             _this2.is_error = false;
             _this2.data_success = true;
             _this2.success_message = res.data.message;
-            _this2.is_payment_active = true;
+            _this2.is_booking_active = false;
           }
         })["catch"](function (error) {
           //if any error occurs on server side
