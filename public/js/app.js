@@ -95925,7 +95925,8 @@ if (document.getElementById("page-book-appointment")) {
         cvv: '',
         expiry_month: '',
         expiry_year: '',
-        amount: 0
+        amount: 0,
+        doctor_id: 0
       },
       weekday: {
         0: "SUNDAY",
@@ -95978,6 +95979,7 @@ if (document.getElementById("page-book-appointment")) {
         });
         this.removeDuplicates("type");
         this.form.amount = this.treatment_types[0].rate;
+        this.form.doctor_id = this.treatment_types[0].doctor_id;
       },
       removeDuplicates: function removeDuplicates(param) {
         //remove duplicates from arrays
@@ -96004,10 +96006,13 @@ if (document.getElementById("page-book-appointment")) {
         this.is_error = false;
       },
       updateAmount: function updateAmount(event) {
-        //set ampunt to be paid at time of booking
+        //set amount to be paid at time of booking
         this.form.amount = this.time_slots.filter(function (data) {
           return data.timing_slot_id === parseInt(event.target.value);
         })[0].rate;
+        this.form.doctor_id = this.time_slots.filter(function (data) {
+          return data.timing_slot_id === parseInt(event.target.value);
+        })[0].doctor_id;
       },
       submitForm: function submitForm() {
         var _this2 = this;
