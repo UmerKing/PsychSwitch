@@ -1327,22 +1327,21 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v9.3.2",
+            "version": "v9.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "192fe387c1c173c12f82784e2a1b51be8bd1bf45"
+                "reference": "011bd500e8ae3d459b692467880a49ff1ecd60c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/192fe387c1c173c12f82784e2a1b51be8bd1bf45",
-                "reference": "192fe387c1c173c12f82784e2a1b51be8bd1bf45",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/011bd500e8ae3d459b692467880a49ff1ecd60c0",
+                "reference": "011bd500e8ae3d459b692467880a49ff1ecd60c0",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "firebase/php-jwt": "^5.0",
-                "guzzlehttp/guzzle": "^6.0|^7.0",
                 "illuminate/auth": "^6.18.31|^7.22.4",
                 "illuminate/console": "^6.18.31|^7.22.4",
                 "illuminate/container": "^6.18.31|^7.22.4",
@@ -1353,16 +1352,17 @@
                 "illuminate/http": "^6.18.31|^7.22.4",
                 "illuminate/support": "^6.18.31|^7.22.4",
                 "laminas/laminas-diactoros": "^2.2",
-                "league/oauth2-server": "^8.1",
+                "lcobucci/jwt": "^3.4|^4.0",
+                "league/oauth2-server": "^8.2.3",
                 "nyholm/psr7": "^1.0",
-                "php": "^7.2",
+                "php": "^7.2|^8.0",
                 "phpseclib/phpseclib": "^2.0",
                 "symfony/psr-http-message-bridge": "^2.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "orchestra/testbench": "^4.4|^5.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.5|^9.3"
             },
             "type": "library",
             "extra": {
@@ -1396,7 +1396,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2020-07-27T18:34:39+00:00"
+            "time": "2020-12-04T09:37:12+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1869,16 +1869,16 @@
         },
         {
             "name": "league/oauth2-server",
-            "version": "8.2.2",
+            "version": "8.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "e87248ffcd905c3dd91ca58d002caa0ec1381c2c"
+                "reference": "70bb329bc79b7965a56f46e293da946c5a976ef1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/e87248ffcd905c3dd91ca58d002caa0ec1381c2c",
-                "reference": "e87248ffcd905c3dd91ca58d002caa0ec1381c2c",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/70bb329bc79b7965a56f46e293da946c5a976ef1",
+                "reference": "70bb329bc79b7965a56f46e293da946c5a976ef1",
                 "shasum": ""
             },
             "require": {
@@ -1887,7 +1887,7 @@
                 "ext-openssl": "*",
                 "lcobucci/jwt": "^3.4 || ^4.0",
                 "league/event": "^2.2",
-                "php": "^7.3 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "psr/http-message": "^1.0.1"
             },
             "replace": {
@@ -1895,10 +1895,10 @@
                 "lncd/oauth2": "*"
             },
             "require-dev": {
-                "laminas/laminas-diactoros": "^2.5.0",
+                "laminas/laminas-diactoros": "^2.4.1",
                 "phpstan/phpstan": "^0.12.57",
                 "phpstan/phpstan-phpunit": "^0.12.16",
-                "phpunit/phpunit": "^9.4.3",
+                "phpunit/phpunit": "^8.5.13",
                 "roave/security-advisories": "dev-master"
             },
             "type": "library",
@@ -1942,7 +1942,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2020-11-30T10:10:52+00:00"
+            "time": "2020-12-03T21:32:29+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2106,16 +2106,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.2",
+            "version": "v4.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de"
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/658f1be311a230e0907f5dfe0213742aff0596de",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
                 "shasum": ""
             },
             "require": {
@@ -2154,7 +2154,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-09-26T10:30:38+00:00"
+            "time": "2020-12-03T17:45:45+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -2881,16 +2881,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.10.4",
+            "version": "v0.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560"
+                "reference": "7c710551d4a2653afa259c544508dc18a9098956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a8aec1b2981ab66882a01cce36a49b6317dc3560",
-                "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/7c710551d4a2653afa259c544508dc18a9098956",
+                "reference": "7c710551d4a2653afa259c544508dc18a9098956",
                 "shasum": ""
             },
             "require": {
@@ -2949,7 +2949,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2020-05-03T19:32:03+00:00"
+            "time": "2020-12-04T02:51:30+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
