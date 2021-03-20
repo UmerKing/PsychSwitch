@@ -13624,3 +13624,29 @@ a.text-dark:focus {
   border-bottom: none !important;
 }
 
+/**
+ * SASS for search section created on 20 March, 2021
+ **/
+
+.search_area .container .row .col-xl-12 .search_content form .search-slt {
+  display: block;
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  height: calc(3rem + 2px) !important;
+  border-radius: 0;
+}
+
+.search_area .container .row .col-xl-12 .search_content form .row .col-lg-12 .row .search-btn button {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: capitalize;
+  height: calc(3rem + 2px) !important;
+  border-radius: 0;
+}
+

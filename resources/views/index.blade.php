@@ -105,6 +105,10 @@
     </div>
     <!-- service_area_end -->
 
+    <!-- search section start -->
+    @include('inc.search')
+    <!-- search section end -->
+
     <!-- welcome_docmed_area_start -->
     <div class="welcome_docmed_area">
         <div class="container">
