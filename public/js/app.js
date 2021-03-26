@@ -95867,7 +95867,9 @@ __webpack_require__(/*! ./doctor_profile */ "./resources/js/doctor_profile.js");
 
 __webpack_require__(/*! ./timing_slots */ "./resources/js/timing_slots.js");
 
-__webpack_require__(/*! ./book_appointment */ "./resources/js/book_appointment.js"); //window.Vue = require('vue');
+__webpack_require__(/*! ./book_appointment */ "./resources/js/book_appointment.js");
+
+__webpack_require__(/*! ./search */ "./resources/js/search.js"); //window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -96264,6 +96266,61 @@ if (document.getElementById("register-card")) {
       } else {
         this.seen = true;
       }
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/search.js":
+/*!********************************!*\
+  !*** ./resources/js/search.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Js for search section created on 21 March, 2021
+ **/
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+if (document.getElementById("search-area")) {
+  doctor_profile = new Vue({
+    el: '#search-area',
+    data: {
+      cities: [],
+      specialities: [],
+      errors: [],
+      is_error_thrown: false,
+      city_name: '',
+      base_url: window.location.origin
+    },
+    methods: {},
+    mounted: function mounted() {
+      var _this = this;
+
+      //get specialities from api
+      axios.get(this.base_url + '/api/specialities').then(function (response) {
+        return _this.specialities = response.data.data, _this.specialities.splice(0, 0, {
+          "id": "0",
+          "name": "Select Speciality"
+        });
+      })["catch"](function (error) {
+        _this.errors.push({
+          message: "Their is error occurred in speciality api please contact administrator"
+        }), _this.is_error_thrown = true;
+      }); //get cities from api
+
+      axios.get(this.base_url + '/api/cities').then(function (response) {
+        return _this.cities = response.data.data, _this.cities.splice(0, 0, {
+          "id": "0",
+          "city": "Select City"
+        });
+      })["catch"](function (error) {
+        _this.errors.push({
+          message: "Their is error occurred in cities api please contact administrator"
+        }), _this.is_error_thrown = true;
+      });
     }
   });
 }

@@ -408,40 +408,6 @@
     </div>
     <!-- business_expert_area_end  -->
 
-
-    <!-- expert_doctors_area_start -->
-    <div class="expert_doctors_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="doctors_title mb-55">
-                        <h3>Expert Doctors</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="expert_active owl-carousel">
-                        @foreach($doctors as $doctor)
-                            <div class="single_expert">
-                                <div class="expert_thumb">
-                                    <a href="{{url("/".$doctor->id . "/book-appointment")}}">
-                                    <img src="{{asset('images/'.$doctor->avatar)}}" alt="">
-                                    </a>
-                                </div>
-                                <div class="experts_name text-center">
-                                    <h3>{{$doctor->name}}</h3>
-                                    <span>{{$doctor->speciality_name}}</span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- expert_doctors_area_end -->
-
     <!-- Emergency_contact start -->
     <div class="Emergency_contact">
         <div class="conatiner-fluid p-0">
